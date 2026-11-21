@@ -26,6 +26,8 @@ void main() {
       await tester.pumpAndSettle();
     }
 
+    await tester.ensureVisible(find.text('Start'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Start'));
     await tester.pumpAndSettle();
     expect(find.text('Which of these is a mammal?'), findsOneWidget);

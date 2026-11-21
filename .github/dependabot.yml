@@ -1,21 +1,26 @@
+# One grouped pull request per ecosystem per month, so dependency updates never
+# flood the repository. The Android toolchain (AGP, Gradle, Kotlin) is owned by
+# Flutter and is deliberately not tracked here: it changes with a Flutter
+# upgrade, not on its own.
 version: 2
 updates:
   - package-ecosystem: pub
     directory: /
     schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
+      interval: monthly
+    open-pull-requests-limit: 1
+    groups:
+      pub-dependencies:
+        patterns: ["*"]
     commit-message:
       prefix: "chore(deps)"
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+    open-pull-requests-limit: 1
+    groups:
+      actions:
+        patterns: ["*"]
     commit-message:
       prefix: "ci(deps)"
-  - package-ecosystem: gradle
-    directory: /android
-    schedule:
-      interval: weekly
-    commit-message:
-      prefix: "chore(deps)"

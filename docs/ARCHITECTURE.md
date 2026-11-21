@@ -29,8 +29,9 @@ except route builders and a few page-level `State` fields.
 | Feature | Responsibility |
 |---|---|
 | `onboarding` | Splash and three-step welcome tour |
-| `profile` | Learner profile (name, grade, buddy), validation, setup form |
-| `learning` | Subjects, quiz sets, questions, catalog loading and validation |
+| `profile` | Learners (several per phone), validation, setup form, switcher |
+| `learning` | Curriculum blueprints, procedural generators, catalog assembly, validation |
+| `ai` | On-device model: `LlmClient`, model manager, question generator, bank filler, A2UI agent, validator and catalog |
 | `quiz` | The quiz session: `QuizBloc`, question views, results |
 | `progress` | Stars, streaks, badges, weekly stats, rewards screens |
 | `parent` | Parent gate, grown-ups dashboard, in-memory parent session |
@@ -82,15 +83,48 @@ production, in-memory in tests). It provides:
 - write failures returned as `StorageFailure` while the previous value stays
   authoritative.
 
-Keys are versioned (`wonderly.progress.v1`) so a future migration is explicit.
+Keys are versioned. Progress is stored per learner (`wonderly.progress.v2.<id>`;
+the pre-roster learner keeps `wonderly.progress.v1`), and `rebind(key)` switches
+learners through the same serialised queue (ADR 0007).
+
+## On-device AI
+
+```
+Curriculum (SetBlueprint)
+  |-- procedural: ProceduralGenerator (maths, shapes, patterns)  --\
+  |-- llm:        BankFiller -> QuestionGenerator -> GeneratedBank --+-> CatalogAssembler -> Catalog -> QuizBloc
+  `-- safety net: assets/data/questions.json (until a full round exists) --/
+```
+
+- `LlmClient` is the seam to the model (`EdgeAiLlmClient` in production, a
+  scripted fake in tests). Calls are serialised, failures are `Result`s, the
+  model is released after each batch, and a failed model is reloaded next time.
+- `ModelManager` owns the model file life cycle (`ModelStatus`): unsupported,
+  not installed, downloading (with cancel), installed, failed. Hardware checks
+  (Android 11+, arm64, memory per profile; iOS 15+) live in
+  `DeviceCapabilityChecker`.
+- `QuestionGenerator` accepts a question only after schema, field, safety,
+  structure, duplicate and **second-pass self-check** validation (ADR 0005).
+- `GenerationCubit` runs `BankFiller` politely: paused for an open quiz, the
+  background, a user stop, or low battery; every accepted question is saved at
+  once. The `CatalogCubit` listens to bank and progress changes (debounced) and
+  republishes the catalog without a loading flash.
+- `CatalogAssembler` builds the playable catalog for the active learner:
+  windows of the bank advance with each completed round; procedural sets follow
+  grade and day.
+
+### Generative UI (A2UI)
+
+`BuddyAgent` asks the model for a card, `A2uiValidator` reduces the reply to
+plain values (or rejects it), and the app emits the A2UI messages through
+`A2uiTransportAdapter` into genui's `SurfaceController`, drawn by `Surface` with
+`WonderlyCatalog` (ADR 0006). A deterministic fallback keeps the card present
+and correct when the model is unavailable.
 
 ## Content pipeline
 
-`assets/data/questions.json` -> `CatalogParser` -> `ValidateQuestion` ->
-`Catalog`. Invalid questions are skipped and logged, never shown. The same
-validator is the gate any generated content must pass (see
-[ROADMAP](ROADMAP.md)). A test asserts the bundled bank has zero rejected
-questions and that every logic pattern really repeats to its stated answer.
+See [CONTENT.md](CONTENT.md). Generated and bundled questions pass the same
+`ValidateQuestion` rules; `GeneratedBank` re-validates everything it loads.
 
 ## Error handling
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wonderly/core/router/routes.dart';
-import 'package:wonderly/core/theme/app_colors.dart';
 import 'package:wonderly/core/theme/app_text.dart';
 import 'package:wonderly/core/widgets/art_view.dart';
 import 'package:wonderly/core/widgets/wonder_progress_bar.dart';
@@ -53,20 +52,6 @@ class SubjectsPage extends StatelessWidget {
                     total: catalog.questionCountFor(subject),
                     onTap: () => _open(context, catalog, subject),
                   ),
-                _SubjectTile(
-                  title: 'Numbers',
-                  color: AppColors.cream,
-                  art: Text('1 2 3', style: AppText.heading(34)),
-                  comingSoon: true,
-                  onTap: () => _comingSoon(context),
-                ),
-                _SubjectTile(
-                  title: 'Words',
-                  color: AppColors.sage,
-                  art: Text('Aa', style: AppText.heading(40)),
-                  comingSoon: true,
-                  onTap: () => _comingSoon(context),
-                ),
               ],
             ),
           ],
@@ -105,7 +90,6 @@ class _SubjectTile extends StatelessWidget {
     required this.onTap,
     this.done = 0,
     this.total = 0,
-    this.comingSoon = false,
   });
 
   final String title;
@@ -114,11 +98,10 @@ class _SubjectTile extends StatelessWidget {
   final VoidCallback onTap;
   final int done;
   final int total;
-  final bool comingSoon;
 
   @override
   Widget build(BuildContext context) {
-    final subtitle = comingSoon ? 'New' : '$done/$total done';
+    final subtitle = '$done/$total done';
     return TintedCard(
       color: color,
       semanticLabel: '$title, $subtitle',

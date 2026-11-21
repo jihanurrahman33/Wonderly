@@ -27,6 +27,8 @@ class AppSettings extends Equatable {
     this.bedtimeMode = false,
     this.dailyLimitMinutes = AppConstants.defaultDailyLimitMinutes,
     this.weeklyReport = true,
+    this.aiEnabled = true,
+    this.modelProfile = 'balanced',
   });
 
   factory AppSettings.fromJson(Map<String, Object?> json) {
@@ -44,6 +46,8 @@ class AppSettings extends Equatable {
         AppConstants.maxDailyLimitMinutes,
       ),
       weeklyReport: json['weeklyReport'] as bool? ?? true,
+      aiEnabled: json['aiEnabled'] as bool? ?? true,
+      modelProfile: json['modelProfile'] as String? ?? 'balanced',
     );
   }
 
@@ -57,6 +61,12 @@ class AppSettings extends Equatable {
   /// Preference only: there is no backend, so reports are shown in-app.
   final bool weeklyReport;
 
+  /// Whether Smart Buddy may write new questions in the background.
+  final bool aiEnabled;
+
+  /// Name of the chosen `ModelProfile`.
+  final String modelProfile;
+
   AppSettings copyWith({
     bool? soundEffects,
     bool? music,
@@ -65,6 +75,8 @@ class AppSettings extends Equatable {
     bool? bedtimeMode,
     int? dailyLimitMinutes,
     bool? weeklyReport,
+    bool? aiEnabled,
+    String? modelProfile,
   }) {
     return AppSettings(
       soundEffects: soundEffects ?? this.soundEffects,
@@ -74,6 +86,8 @@ class AppSettings extends Equatable {
       bedtimeMode: bedtimeMode ?? this.bedtimeMode,
       dailyLimitMinutes: dailyLimitMinutes ?? this.dailyLimitMinutes,
       weeklyReport: weeklyReport ?? this.weeklyReport,
+      aiEnabled: aiEnabled ?? this.aiEnabled,
+      modelProfile: modelProfile ?? this.modelProfile,
     );
   }
 
@@ -85,6 +99,8 @@ class AppSettings extends Equatable {
     'bedtimeMode': bedtimeMode,
     'dailyLimitMinutes': dailyLimitMinutes,
     'weeklyReport': weeklyReport,
+    'aiEnabled': aiEnabled,
+    'modelProfile': modelProfile,
   };
 
   @override
@@ -96,5 +112,7 @@ class AppSettings extends Equatable {
     bedtimeMode,
     dailyLimitMinutes,
     weeklyReport,
+    aiEnabled,
+    modelProfile,
   ];
 }

@@ -7,12 +7,144 @@
       "title": "Mammals",
       "art": "lion",
       "questions": [
-        {"type": "choice", "id": "mam-1", "prompt": "Which of these is a mammal?", "layout": "list", "options": [{"label": "Shark"}, {"label": "Dolphin"}, {"label": "Frog"}, {"label": "Penguin"}], "answer": 1, "hint": "It breathes air and feeds milk to its babies.", "fact": "Dolphins breathe air and feed milk to their babies."},
-        {"type": "choice", "id": "mam-2", "prompt": "Which animal has babies that are born alive?", "layout": "list", "options": [{"label": "Hen"}, {"label": "Crocodile"}, {"label": "Frog"}, {"label": "Cow"}], "answer": 3, "hint": "A baby of this animal is called a calf.", "fact": "Cows are mammals, so their calves are born alive."},
-        {"type": "choice", "id": "mam-3", "prompt": "What do mammal mothers feed their babies?", "layout": "list", "options": [{"label": "Seeds"}, {"label": "Milk"}, {"label": "Leaves"}, {"label": "Sand"}], "answer": 1, "hint": "Think of what a baby drinks.", "fact": "All mammal mothers make milk for their young."},
-        {"type": "choice", "id": "mam-4", "prompt": "Which mammal can truly fly?", "layout": "list", "options": [{"label": "Eagle"}, {"label": "Butterfly"}, {"label": "Bat"}, {"label": "Bee"}], "answer": 2, "hint": "It comes out at night.", "fact": "Bats are the only mammals that can fly."},
-        {"type": "choice", "id": "mam-5", "prompt": "Which is the biggest animal on Earth?", "layout": "list", "options": [{"label": "Blue whale"}, {"label": "Elephant"}, {"label": "Giraffe"}, {"label": "Hippo"}], "answer": 0, "hint": "It lives in the sea.", "fact": "The blue whale is the largest animal ever known."},
-        {"type": "choice", "id": "mam-6", "prompt": "Which mammal lives in the ocean?", "layout": "list", "options": [{"label": "Octopus"}, {"label": "Crab"}, {"label": "Jellyfish"}, {"label": "Whale"}], "answer": 3, "hint": "It comes up to breathe air.", "fact": "Whales are mammals that live in the sea."}
+        {
+          "type": "choice",
+          "id": "mam-1",
+          "prompt": "Which of these is a mammal?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Shark"
+            },
+            {
+              "label": "Dolphin"
+            },
+            {
+              "label": "Frog"
+            },
+            {
+              "label": "Penguin"
+            }
+          ],
+          "answer": 1,
+          "hint": "It breathes air and feeds milk to its babies.",
+          "fact": "Dolphins breathe air and feed milk to their babies."
+        },
+        {
+          "type": "choice",
+          "id": "mam-2",
+          "prompt": "Which animal has babies that are born alive?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Hen"
+            },
+            {
+              "label": "Crocodile"
+            },
+            {
+              "label": "Frog"
+            },
+            {
+              "label": "Cow"
+            }
+          ],
+          "answer": 3,
+          "hint": "A baby of this animal is called a calf.",
+          "fact": "Cows are mammals, so their calves are born alive."
+        },
+        {
+          "type": "choice",
+          "id": "mam-3",
+          "prompt": "What do mammal mothers feed their babies?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Seeds"
+            },
+            {
+              "label": "Milk"
+            },
+            {
+              "label": "Leaves"
+            },
+            {
+              "label": "Sand"
+            }
+          ],
+          "answer": 1,
+          "hint": "Think of what a baby drinks.",
+          "fact": "All mammal mothers make milk for their young."
+        },
+        {
+          "type": "choice",
+          "id": "mam-4",
+          "prompt": "Which mammal can truly fly?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Eagle"
+            },
+            {
+              "label": "Butterfly"
+            },
+            {
+              "label": "Bat"
+            },
+            {
+              "label": "Bee"
+            }
+          ],
+          "answer": 2,
+          "hint": "It comes out at night.",
+          "fact": "Bats are the only mammals that can fly."
+        },
+        {
+          "type": "choice",
+          "id": "mam-5",
+          "prompt": "Which is the biggest animal on Earth?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Blue whale"
+            },
+            {
+              "label": "Elephant"
+            },
+            {
+              "label": "Giraffe"
+            },
+            {
+              "label": "Hippo"
+            }
+          ],
+          "answer": 0,
+          "hint": "It lives in the sea.",
+          "fact": "The blue whale is the largest animal ever known."
+        },
+        {
+          "type": "choice",
+          "id": "mam-6",
+          "prompt": "Which mammal lives in the ocean?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Octopus"
+            },
+            {
+              "label": "Crab"
+            },
+            {
+              "label": "Jellyfish"
+            },
+            {
+              "label": "Whale"
+            }
+          ],
+          "answer": 3,
+          "hint": "It comes up to breathe air.",
+          "fact": "Whales are mammals that live in the sea."
+        }
       ]
     },
     {
@@ -21,16 +153,276 @@
       "title": "Zoology Quiz",
       "art": "cat",
       "questions": [
-        {"type": "choice", "id": "zoo-1", "prompt": "Which animal hops?", "layout": "grid", "options": [{"label": "Lion", "art": "lion"}, {"label": "Rabbit", "art": "rabbit"}, {"label": "Owl", "art": "owl"}, {"label": "Cat", "art": "cat"}], "answer": 1, "hint": "Think of a bunny.", "fact": "Rabbits have strong back legs that help them hop."},
-        {"type": "choice", "id": "zoo-2", "prompt": "Which animal purrs when it is happy?", "layout": "grid", "options": [{"label": "Rabbit", "art": "rabbit"}, {"label": "Owl", "art": "owl"}, {"label": "Cat", "art": "cat"}, {"label": "Fox", "art": "fox"}], "answer": 2, "hint": "It likes to curl up on your lap.", "fact": "Cats purr when they feel calm and happy."},
-        {"type": "choice", "id": "zoo-3", "prompt": "Which animal is an apex predator?", "layout": "grid", "options": [{"label": "Fox", "art": "fox"}, {"label": "Rabbit", "art": "rabbit"}, {"label": "Lion", "art": "lion"}, {"label": "Owl", "art": "owl"}], "answer": 2, "hint": "Nothing hunts this animal.", "fact": "Lions sit at the top of their food chain, so nothing hunts them."},
-        {"type": "choice", "id": "zoo-4", "prompt": "Which animal can turn its head almost all the way round?", "layout": "grid", "options": [{"label": "Owl", "art": "owl"}, {"label": "Cat", "art": "cat"}, {"label": "Lion", "art": "lion"}, {"label": "Fox", "art": "fox"}], "answer": 0, "hint": "It says hoo-hoo.", "fact": "Owls can turn their heads about three quarters of the way around."},
-        {"type": "choice", "id": "zoo-5", "prompt": "Which animal is a bird?", "layout": "grid", "options": [{"label": "Cat", "art": "cat"}, {"label": "Fox", "art": "fox"}, {"label": "Rabbit", "art": "rabbit"}, {"label": "Owl", "art": "owl"}], "answer": 3, "hint": "Look for the one with wings.", "fact": "Owls have feathers and wings, so they are birds."},
-        {"type": "choice", "id": "zoo-6", "prompt": "Which animal has a bushy tail and a pointed nose?", "layout": "grid", "options": [{"label": "Fox", "art": "fox"}, {"label": "Lion", "art": "lion"}, {"label": "Owl", "art": "owl"}, {"label": "Rabbit", "art": "rabbit"}], "answer": 0, "hint": "Its coat is often orange.", "fact": "Foxes use their bushy tails for balance and to keep warm."},
-        {"type": "choice", "id": "zoo-7", "prompt": "Which animal has a mane?", "layout": "grid", "options": [{"label": "Fox", "art": "fox"}, {"label": "Cat", "art": "cat"}, {"label": "Rabbit", "art": "rabbit"}, {"label": "Lion", "art": "lion"}], "answer": 3, "hint": "It is called the king of the jungle.", "fact": "Male lions grow a thick mane around their heads."},
-        {"type": "choice", "id": "zoo-8", "prompt": "Which animal has long ears?", "layout": "grid", "options": [{"label": "Lion", "art": "lion"}, {"label": "Owl", "art": "owl"}, {"label": "Rabbit", "art": "rabbit"}, {"label": "Cat", "art": "cat"}], "answer": 2, "hint": "It likes carrots.", "fact": "A rabbit's long ears help it hear danger from far away."},
-        {"type": "choice", "id": "zoo-9", "prompt": "Which animal lives in a group called a pride?", "layout": "grid", "options": [{"label": "Fox", "art": "fox"}, {"label": "Cat", "art": "cat"}, {"label": "Owl", "art": "owl"}, {"label": "Lion", "art": "lion"}], "answer": 3, "hint": "It roars.", "fact": "A pride is a family group of lions."},
-        {"type": "choice", "id": "zoo-10", "prompt": "Which animal hunts by flying silently?", "layout": "grid", "options": [{"label": "Owl", "art": "owl"}, {"label": "Fox", "art": "fox"}, {"label": "Cat", "art": "cat"}, {"label": "Lion", "art": "lion"}], "answer": 0, "hint": "It has soft feathers.", "fact": "Soft feathers help owls fly without making a sound."}
+        {
+          "type": "choice",
+          "id": "zoo-1",
+          "prompt": "Which animal hops?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Lion",
+              "art": "lion"
+            },
+            {
+              "label": "Rabbit",
+              "art": "rabbit"
+            },
+            {
+              "label": "Owl",
+              "art": "owl"
+            },
+            {
+              "label": "Cat",
+              "art": "cat"
+            }
+          ],
+          "answer": 1,
+          "hint": "Think of a bunny.",
+          "fact": "Rabbits have strong back legs that help them hop."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-2",
+          "prompt": "Which animal purrs when it is happy?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Rabbit",
+              "art": "rabbit"
+            },
+            {
+              "label": "Owl",
+              "art": "owl"
+            },
+            {
+              "label": "Cat",
+              "art": "cat"
+            },
+            {
+              "label": "Fox",
+              "art": "fox"
+            }
+          ],
+          "answer": 2,
+          "hint": "It likes to curl up on your lap.",
+          "fact": "Cats purr when they feel calm and happy."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-3",
+          "prompt": "Which animal is an apex predator?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Fox",
+              "art": "fox"
+            },
+            {
+              "label": "Rabbit",
+              "art": "rabbit"
+            },
+            {
+              "label": "Lion",
+              "art": "lion"
+            },
+            {
+              "label": "Owl",
+              "art": "owl"
+            }
+          ],
+          "answer": 2,
+          "hint": "Nothing hunts this animal.",
+          "fact": "Lions sit at the top of their food chain, so nothing hunts them."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-4",
+          "prompt": "Which animal can turn its head almost all the way round?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Owl",
+              "art": "owl"
+            },
+            {
+              "label": "Cat",
+              "art": "cat"
+            },
+            {
+              "label": "Lion",
+              "art": "lion"
+            },
+            {
+              "label": "Fox",
+              "art": "fox"
+            }
+          ],
+          "answer": 0,
+          "hint": "It says hoo-hoo.",
+          "fact": "Owls can turn their heads about three quarters of the way around."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-5",
+          "prompt": "Which animal is a bird?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Cat",
+              "art": "cat"
+            },
+            {
+              "label": "Fox",
+              "art": "fox"
+            },
+            {
+              "label": "Rabbit",
+              "art": "rabbit"
+            },
+            {
+              "label": "Owl",
+              "art": "owl"
+            }
+          ],
+          "answer": 3,
+          "hint": "Look for the one with wings.",
+          "fact": "Owls have feathers and wings, so they are birds."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-6",
+          "prompt": "Which animal has a bushy tail and a pointed nose?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Fox",
+              "art": "fox"
+            },
+            {
+              "label": "Lion",
+              "art": "lion"
+            },
+            {
+              "label": "Owl",
+              "art": "owl"
+            },
+            {
+              "label": "Rabbit",
+              "art": "rabbit"
+            }
+          ],
+          "answer": 0,
+          "hint": "Its coat is often orange.",
+          "fact": "Foxes use their bushy tails for balance and to keep warm."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-7",
+          "prompt": "Which animal has a mane?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Fox",
+              "art": "fox"
+            },
+            {
+              "label": "Cat",
+              "art": "cat"
+            },
+            {
+              "label": "Rabbit",
+              "art": "rabbit"
+            },
+            {
+              "label": "Lion",
+              "art": "lion"
+            }
+          ],
+          "answer": 3,
+          "hint": "It is called the king of the jungle.",
+          "fact": "Male lions grow a thick mane around their heads."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-8",
+          "prompt": "Which animal has long ears?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Lion",
+              "art": "lion"
+            },
+            {
+              "label": "Owl",
+              "art": "owl"
+            },
+            {
+              "label": "Rabbit",
+              "art": "rabbit"
+            },
+            {
+              "label": "Cat",
+              "art": "cat"
+            }
+          ],
+          "answer": 2,
+          "hint": "It likes carrots.",
+          "fact": "A rabbit's long ears help it hear danger from far away."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-9",
+          "prompt": "Which animal lives in a group called a pride?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Fox",
+              "art": "fox"
+            },
+            {
+              "label": "Cat",
+              "art": "cat"
+            },
+            {
+              "label": "Owl",
+              "art": "owl"
+            },
+            {
+              "label": "Lion",
+              "art": "lion"
+            }
+          ],
+          "answer": 3,
+          "hint": "It roars.",
+          "fact": "A pride is a family group of lions."
+        },
+        {
+          "type": "choice",
+          "id": "zoo-10",
+          "prompt": "Which animal hunts by flying silently?",
+          "layout": "grid",
+          "options": [
+            {
+              "label": "Owl",
+              "art": "owl"
+            },
+            {
+              "label": "Fox",
+              "art": "fox"
+            },
+            {
+              "label": "Cat",
+              "art": "cat"
+            },
+            {
+              "label": "Lion",
+              "art": "lion"
+            }
+          ],
+          "answer": 0,
+          "hint": "It has soft feathers.",
+          "fact": "Soft feathers help owls fly without making a sound."
+        }
       ]
     },
     {
@@ -39,12 +431,144 @@
       "title": "Birds",
       "art": "owl",
       "questions": [
-        {"type": "choice", "id": "bird-1", "prompt": "Which bird cannot fly?", "layout": "list", "options": [{"label": "Eagle"}, {"label": "Owl"}, {"label": "Penguin"}, {"label": "Parrot"}], "answer": 2, "hint": "It swims instead.", "fact": "Penguins use their wings like flippers to swim."},
-        {"type": "choice", "id": "bird-2", "prompt": "What covers a bird's body?", "layout": "list", "options": [{"label": "Fur"}, {"label": "Scales"}, {"label": "Feathers"}, {"label": "Shells"}], "answer": 2, "hint": "It helps birds fly.", "fact": "Feathers keep birds warm and help them fly."},
-        {"type": "choice", "id": "bird-3", "prompt": "Which animal lays eggs in a nest?", "layout": "list", "options": [{"label": "Cow"}, {"label": "Robin"}, {"label": "Dog"}, {"label": "Horse"}], "answer": 1, "hint": "It has a beak.", "fact": "Robins build nests and lay blue eggs."},
-        {"type": "choice", "id": "bird-4", "prompt": "Which bird can copy human words?", "layout": "list", "options": [{"label": "Penguin"}, {"label": "Ostrich"}, {"label": "Swan"}, {"label": "Parrot"}], "answer": 3, "hint": "It is often very colourful.", "fact": "Parrots can copy sounds and words they hear."},
-        {"type": "choice", "id": "bird-5", "prompt": "Which is the largest bird alive?", "layout": "list", "options": [{"label": "Ostrich"}, {"label": "Eagle"}, {"label": "Owl"}, {"label": "Duck"}], "answer": 0, "hint": "It can run very fast.", "fact": "An ostrich can grow taller than a grown-up."},
-        {"type": "choice", "id": "bird-6", "prompt": "What do birds use to fly?", "layout": "list", "options": [{"label": "Fins"}, {"label": "Paws"}, {"label": "Wings"}, {"label": "Horns"}], "answer": 2, "hint": "They flap them up and down.", "fact": "Wings lift birds into the air as they flap."}
+        {
+          "type": "choice",
+          "id": "bird-1",
+          "prompt": "Which bird cannot fly?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Eagle"
+            },
+            {
+              "label": "Owl"
+            },
+            {
+              "label": "Penguin"
+            },
+            {
+              "label": "Parrot"
+            }
+          ],
+          "answer": 2,
+          "hint": "It swims instead.",
+          "fact": "Penguins use their wings like flippers to swim."
+        },
+        {
+          "type": "choice",
+          "id": "bird-2",
+          "prompt": "What covers a bird's body?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Fur"
+            },
+            {
+              "label": "Scales"
+            },
+            {
+              "label": "Feathers"
+            },
+            {
+              "label": "Shells"
+            }
+          ],
+          "answer": 2,
+          "hint": "It helps birds fly.",
+          "fact": "Feathers keep birds warm and help them fly."
+        },
+        {
+          "type": "choice",
+          "id": "bird-3",
+          "prompt": "Which animal lays eggs in a nest?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Cow"
+            },
+            {
+              "label": "Robin"
+            },
+            {
+              "label": "Dog"
+            },
+            {
+              "label": "Horse"
+            }
+          ],
+          "answer": 1,
+          "hint": "It has a beak.",
+          "fact": "Robins build nests and lay blue eggs."
+        },
+        {
+          "type": "choice",
+          "id": "bird-4",
+          "prompt": "Which bird can copy human words?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Penguin"
+            },
+            {
+              "label": "Ostrich"
+            },
+            {
+              "label": "Swan"
+            },
+            {
+              "label": "Parrot"
+            }
+          ],
+          "answer": 3,
+          "hint": "It is often very colourful.",
+          "fact": "Parrots can copy sounds and words they hear."
+        },
+        {
+          "type": "choice",
+          "id": "bird-5",
+          "prompt": "Which is the largest bird alive?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Ostrich"
+            },
+            {
+              "label": "Eagle"
+            },
+            {
+              "label": "Owl"
+            },
+            {
+              "label": "Duck"
+            }
+          ],
+          "answer": 0,
+          "hint": "It can run very fast.",
+          "fact": "An ostrich can grow taller than a grown-up."
+        },
+        {
+          "type": "choice",
+          "id": "bird-6",
+          "prompt": "What do birds use to fly?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Fins"
+            },
+            {
+              "label": "Paws"
+            },
+            {
+              "label": "Wings"
+            },
+            {
+              "label": "Horns"
+            }
+          ],
+          "answer": 2,
+          "hint": "They flap them up and down.",
+          "fact": "Wings lift birds into the air as they flap."
+        }
       ]
     },
     {
@@ -54,25 +578,121 @@
       "art": "water_drop",
       "unlockStars": 30,
       "questions": [
-        {"type": "choice", "id": "sea-1", "prompt": "Which sea animal has eight arms?", "layout": "list", "options": [{"label": "Shark"}, {"label": "Octopus"}, {"label": "Whale"}, {"label": "Starfish"}], "answer": 1, "hint": "It can squirt ink.", "fact": "An octopus has eight arms covered in suckers."},
-        {"type": "choice", "id": "sea-2", "prompt": "What do fish use to breathe underwater?", "layout": "list", "options": [{"label": "Lungs"}, {"label": "Wings"}, {"label": "Gills"}, {"label": "Nose"}], "answer": 2, "hint": "They are on the sides of the head.", "fact": "Gills take oxygen from the water."},
-        {"type": "choice", "id": "sea-3", "prompt": "Which sea animal is shaped like a star?", "layout": "list", "options": [{"label": "Starfish"}, {"label": "Dolphin"}, {"label": "Crab"}, {"label": "Seal"}], "answer": 0, "hint": "Its name gives it away.", "fact": "Most starfish have five arms."},
-        {"type": "choice", "id": "sea-4", "prompt": "Which sea animal has claws and a hard shell?", "layout": "list", "options": [{"label": "Seal"}, {"label": "Eel"}, {"label": "Whale"}, {"label": "Crab"}], "answer": 3, "hint": "It walks sideways.", "fact": "Crabs walk sideways on their strong legs."},
-        {"type": "choice", "id": "sea-5", "prompt": "Which sea animal has a tall fin and sharp teeth?", "layout": "list", "options": [{"label": "Turtle"}, {"label": "Crab"}, {"label": "Shark"}, {"label": "Starfish"}], "answer": 2, "hint": "It is a fast swimmer.", "fact": "Sharks are fish with skeletons made of bendy cartilage."}
-      ]
-    },
-    {
-      "id": "geometry_shapes",
-      "subject": "geometry",
-      "title": "Geometry shapes",
-      "art": "shape_triangle",
-      "questions": [
-        {"type": "match", "id": "geo-1", "prompt": "Drag each shape to its match", "shapes": ["circle", "triangle", "square"], "hint": "Look at the corners.", "fact": "A triangle has 3 sides and 3 corners."},
-        {"type": "choice", "id": "geo-2", "prompt": "How many sides does a triangle have?", "layout": "list", "options": [{"label": "2"}, {"label": "3"}, {"label": "4"}, {"label": "5"}], "answer": 1, "hint": "Tri means three.", "fact": "A triangle has 3 sides and 3 corners."},
-        {"type": "choice", "id": "geo-3", "prompt": "Which shape has no corners?", "layout": "grid", "options": [{"label": "Triangle", "art": "shape_triangle"}, {"label": "Square", "art": "shape_square"}, {"label": "Circle", "art": "shape_circle"}, {"label": "Star", "art": "shape_star"}], "answer": 2, "hint": "It is round.", "fact": "A circle is perfectly round, so it has no corners."},
-        {"type": "choice", "id": "geo-4", "prompt": "How many sides does a square have?", "layout": "list", "options": [{"label": "3"}, {"label": "5"}, {"label": "6"}, {"label": "4"}], "answer": 3, "hint": "Count them one by one.", "fact": "A square has 4 equal sides and 4 corners."},
-        {"type": "match", "id": "geo-5", "prompt": "Drag each shape to its match", "shapes": ["star", "circle", "triangle"], "hint": "Match the outline.", "fact": "Shapes can be matched by their outlines."},
-        {"type": "choice", "id": "geo-6", "prompt": "Which shape has four equal sides?", "layout": "grid", "options": [{"label": "Circle", "art": "shape_circle"}, {"label": "Triangle", "art": "shape_triangle"}, {"label": "Star", "art": "shape_star"}, {"label": "Square", "art": "shape_square"}], "answer": 3, "hint": "Think of a window pane.", "fact": "Every side of a square is the same length."}
+        {
+          "type": "choice",
+          "id": "sea-1",
+          "prompt": "Which sea animal has eight arms?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Shark"
+            },
+            {
+              "label": "Octopus"
+            },
+            {
+              "label": "Whale"
+            },
+            {
+              "label": "Starfish"
+            }
+          ],
+          "answer": 1,
+          "hint": "It can squirt ink.",
+          "fact": "An octopus has eight arms covered in suckers."
+        },
+        {
+          "type": "choice",
+          "id": "sea-2",
+          "prompt": "What do fish use to breathe underwater?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Lungs"
+            },
+            {
+              "label": "Wings"
+            },
+            {
+              "label": "Gills"
+            },
+            {
+              "label": "Nose"
+            }
+          ],
+          "answer": 2,
+          "hint": "They are on the sides of the head.",
+          "fact": "Gills take oxygen from the water."
+        },
+        {
+          "type": "choice",
+          "id": "sea-3",
+          "prompt": "Which sea animal is shaped like a star?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Starfish"
+            },
+            {
+              "label": "Dolphin"
+            },
+            {
+              "label": "Crab"
+            },
+            {
+              "label": "Seal"
+            }
+          ],
+          "answer": 0,
+          "hint": "Its name gives it away.",
+          "fact": "Most starfish have five arms."
+        },
+        {
+          "type": "choice",
+          "id": "sea-4",
+          "prompt": "Which sea animal has claws and a hard shell?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Seal"
+            },
+            {
+              "label": "Eel"
+            },
+            {
+              "label": "Whale"
+            },
+            {
+              "label": "Crab"
+            }
+          ],
+          "answer": 3,
+          "hint": "It walks sideways.",
+          "fact": "Crabs walk sideways on their strong legs."
+        },
+        {
+          "type": "choice",
+          "id": "sea-5",
+          "prompt": "Which sea animal has a tall fin and sharp teeth?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "Turtle"
+            },
+            {
+              "label": "Crab"
+            },
+            {
+              "label": "Shark"
+            },
+            {
+              "label": "Starfish"
+            }
+          ],
+          "answer": 2,
+          "hint": "It is a fast swimmer.",
+          "fact": "Sharks are fish with skeletons made of bendy cartilage."
+        }
       ]
     },
     {
@@ -81,31 +701,387 @@
       "title": "Plant ecosystems",
       "art": "plant_pot",
       "questions": [
-        {"type": "choice", "id": "plant-1", "prompt": "What does a plant need to make its food?", "layout": "list", "scene": ["sun", "water_drop", "plant_pot"], "options": [{"label": "Sunlight and water"}, {"label": "Candy and juice"}, {"label": "Music and games"}], "answer": 0, "hint": "Look at the picture.", "fact": "Plants use sunlight and water to make their food."},
-        {"type": "choice", "id": "plant-2", "prompt": "Which part of a plant takes in water?", "layout": "list", "scene": ["water_drop", "plant_pot"], "options": [{"label": "Petals"}, {"label": "Roots"}, {"label": "Fruit"}], "answer": 1, "hint": "It grows under the soil.", "fact": "Roots soak up water from the soil."},
-        {"type": "choice", "id": "plant-3", "prompt": "What do plants give us to breathe?", "layout": "list", "scene": ["plant_pot"], "options": [{"label": "Smoke"}, {"label": "Sand"}, {"label": "Oxygen"}], "answer": 2, "hint": "We need it with every breath.", "fact": "Plants make oxygen that people and animals breathe."},
-        {"type": "choice", "id": "plant-4", "prompt": "What grows from a seed?", "layout": "list", "scene": ["plant_pot"], "options": [{"label": "A new plant"}, {"label": "A rock"}, {"label": "A toy"}], "answer": 0, "hint": "Think of a sunflower.", "fact": "A seed holds a tiny new plant inside."},
-        {"type": "choice", "id": "plant-5", "prompt": "Which part of a plant catches sunlight?", "layout": "list", "scene": ["sun", "plant_pot"], "options": [{"label": "Roots"}, {"label": "Leaves"}, {"label": "Soil"}], "answer": 1, "hint": "It is usually green.", "fact": "Leaves catch sunlight to help the plant make food."},
-        {"type": "choice", "id": "plant-6", "prompt": "What carries water up through a plant?", "layout": "list", "scene": ["water_drop", "plant_pot"], "options": [{"label": "Petal"}, {"label": "Seed"}, {"label": "Stem"}], "answer": 2, "hint": "It holds the plant up too.", "fact": "The stem moves water from the roots to the leaves."},
-        {"type": "choice", "id": "plant-7", "prompt": "Which insect carries pollen between flowers?", "layout": "list", "scene": ["plant_pot"], "options": [{"label": "Bee"}, {"label": "Snail"}, {"label": "Worm"}], "answer": 0, "hint": "It makes honey.", "fact": "Bees carry pollen, which helps flowers make seeds."},
-        {"type": "choice", "id": "plant-8", "prompt": "What is the colourful part of a flower called?", "layout": "list", "scene": ["plant_pot"], "options": [{"label": "Root"}, {"label": "Petal"}, {"label": "Soil"}], "answer": 1, "hint": "It can be red, pink or yellow.", "fact": "Petals attract bees and other helpful insects."}
+        {
+          "type": "choice",
+          "id": "plant-1",
+          "prompt": "What does a plant need to make its food?",
+          "layout": "list",
+          "scene": [
+            "sun",
+            "water_drop",
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "Sunlight and water"
+            },
+            {
+              "label": "Candy and juice"
+            },
+            {
+              "label": "Music and games"
+            }
+          ],
+          "answer": 0,
+          "hint": "Look at the picture.",
+          "fact": "Plants use sunlight and water to make their food."
+        },
+        {
+          "type": "choice",
+          "id": "plant-2",
+          "prompt": "Which part of a plant takes in water?",
+          "layout": "list",
+          "scene": [
+            "water_drop",
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "Petals"
+            },
+            {
+              "label": "Roots"
+            },
+            {
+              "label": "Fruit"
+            }
+          ],
+          "answer": 1,
+          "hint": "It grows under the soil.",
+          "fact": "Roots soak up water from the soil."
+        },
+        {
+          "type": "choice",
+          "id": "plant-3",
+          "prompt": "What do plants give us to breathe?",
+          "layout": "list",
+          "scene": [
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "Smoke"
+            },
+            {
+              "label": "Sand"
+            },
+            {
+              "label": "Oxygen"
+            }
+          ],
+          "answer": 2,
+          "hint": "We need it with every breath.",
+          "fact": "Plants make oxygen that people and animals breathe."
+        },
+        {
+          "type": "choice",
+          "id": "plant-4",
+          "prompt": "What grows from a seed?",
+          "layout": "list",
+          "scene": [
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "A new plant"
+            },
+            {
+              "label": "A rock"
+            },
+            {
+              "label": "A toy"
+            }
+          ],
+          "answer": 0,
+          "hint": "Think of a sunflower.",
+          "fact": "A seed holds a tiny new plant inside."
+        },
+        {
+          "type": "choice",
+          "id": "plant-5",
+          "prompt": "Which part of a plant catches sunlight?",
+          "layout": "list",
+          "scene": [
+            "sun",
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "Roots"
+            },
+            {
+              "label": "Leaves"
+            },
+            {
+              "label": "Soil"
+            }
+          ],
+          "answer": 1,
+          "hint": "It is usually green.",
+          "fact": "Leaves catch sunlight to help the plant make food."
+        },
+        {
+          "type": "choice",
+          "id": "plant-6",
+          "prompt": "What carries water up through a plant?",
+          "layout": "list",
+          "scene": [
+            "water_drop",
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "Petal"
+            },
+            {
+              "label": "Seed"
+            },
+            {
+              "label": "Stem"
+            }
+          ],
+          "answer": 2,
+          "hint": "It holds the plant up too.",
+          "fact": "The stem moves water from the roots to the leaves."
+        },
+        {
+          "type": "choice",
+          "id": "plant-7",
+          "prompt": "Which insect carries pollen between flowers?",
+          "layout": "list",
+          "scene": [
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "Bee"
+            },
+            {
+              "label": "Snail"
+            },
+            {
+              "label": "Worm"
+            }
+          ],
+          "answer": 0,
+          "hint": "It makes honey.",
+          "fact": "Bees carry pollen, which helps flowers make seeds."
+        },
+        {
+          "type": "choice",
+          "id": "plant-8",
+          "prompt": "What is the colourful part of a flower called?",
+          "layout": "list",
+          "scene": [
+            "plant_pot"
+          ],
+          "options": [
+            {
+              "label": "Root"
+            },
+            {
+              "label": "Petal"
+            },
+            {
+              "label": "Soil"
+            }
+          ],
+          "answer": 1,
+          "hint": "It can be red, pink or yellow.",
+          "fact": "Petals attract bees and other helpful insects."
+        }
       ]
     },
     {
-      "id": "logic_puzzles",
-      "subject": "logic",
-      "title": "Logic puzzles",
-      "art": "shape_star",
+      "id": "word_wizard",
+      "subject": "words",
+      "title": "Word wizard",
+      "art": "owl",
       "questions": [
-        {"type": "pattern", "id": "logic-1", "prompt": "What comes next?", "sequence": ["circle", "square", "circle", "square"], "options": ["circle", "square", "star"], "answer": 0, "hint": "Look at the order. It repeats."},
-        {"type": "pattern", "id": "logic-2", "prompt": "What comes next?", "sequence": ["triangle", "circle", "triangle", "circle"], "options": ["circle", "triangle", "star"], "answer": 1, "hint": "Two shapes take turns."},
-        {"type": "pattern", "id": "logic-3", "prompt": "What comes next?", "sequence": ["star", "star", "square", "star", "star"], "options": ["star", "circle", "square"], "answer": 2, "hint": "Which shape is not a star?"},
-        {"type": "pattern", "id": "logic-4", "prompt": "What comes next?", "sequence": ["circle", "circle", "triangle", "circle", "circle"], "options": ["circle", "square", "triangle"], "answer": 2, "hint": "The odd one out comes after two circles."},
-        {"type": "pattern", "id": "logic-5", "prompt": "What comes next?", "sequence": ["square", "triangle", "square", "triangle"], "options": ["triangle", "square", "star"], "answer": 1, "hint": "Look at the order. It repeats."},
-        {"type": "pattern", "id": "logic-6", "prompt": "What comes next?", "sequence": ["circle", "square", "triangle", "circle", "square"], "options": ["circle", "triangle", "star"], "answer": 1, "hint": "Three shapes repeat."},
-        {"type": "pattern", "id": "logic-7", "prompt": "What comes next?", "sequence": ["star", "circle", "star", "circle"], "options": ["circle", "square", "star"], "answer": 2, "hint": "Two shapes take turns."},
-        {"type": "pattern", "id": "logic-8", "prompt": "What comes next?", "sequence": ["triangle", "triangle", "square", "triangle", "triangle"], "options": ["triangle", "circle", "square"], "answer": 2, "hint": "Which shape is not a triangle?"},
-        {"type": "pattern", "id": "logic-9", "prompt": "What comes next?", "sequence": ["circle", "star", "square", "circle", "star"], "options": ["circle", "square", "triangle"], "answer": 1, "hint": "Three shapes repeat."}
+        {
+          "type": "choice",
+          "id": "word-1",
+          "prompt": "Which word rhymes with cat?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "dog"
+            },
+            {
+              "label": "sun"
+            },
+            {
+              "label": "hat"
+            },
+            {
+              "label": "cup"
+            }
+          ],
+          "answer": 2,
+          "hint": "Listen to the end sound.",
+          "fact": "Cat and hat both end with the sound at."
+        },
+        {
+          "type": "choice",
+          "id": "word-2",
+          "prompt": "Which word is spelled correctly?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "freind"
+            },
+            {
+              "label": "friend"
+            },
+            {
+              "label": "frend"
+            },
+            {
+              "label": "firend"
+            }
+          ],
+          "answer": 1,
+          "hint": "Remember: i before e.",
+          "fact": "Friend is spelled f-r-i-e-n-d."
+        },
+        {
+          "type": "choice",
+          "id": "word-3",
+          "prompt": "What is the opposite of hot?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "warm"
+            },
+            {
+              "label": "big"
+            },
+            {
+              "label": "cold"
+            },
+            {
+              "label": "red"
+            }
+          ],
+          "answer": 2,
+          "hint": "Think of ice.",
+          "fact": "Cold is the opposite of hot."
+        },
+        {
+          "type": "choice",
+          "id": "word-4",
+          "prompt": "Which word starts with the letter B?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "cat"
+            },
+            {
+              "label": "ball"
+            },
+            {
+              "label": "dog"
+            },
+            {
+              "label": "sun"
+            }
+          ],
+          "answer": 1,
+          "hint": "Say each word slowly.",
+          "fact": "Ball starts with the letter B."
+        },
+        {
+          "type": "choice",
+          "id": "word-5",
+          "prompt": "What does huge mean?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "very small"
+            },
+            {
+              "label": "very fast"
+            },
+            {
+              "label": "very loud"
+            },
+            {
+              "label": "very big"
+            }
+          ],
+          "answer": 3,
+          "hint": "Think of an elephant.",
+          "fact": "Huge means very big."
+        },
+        {
+          "type": "choice",
+          "id": "word-6",
+          "prompt": "Which word is spelled correctly?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "because"
+            },
+            {
+              "label": "becuase"
+            },
+            {
+              "label": "becase"
+            },
+            {
+              "label": "becaus"
+            }
+          ],
+          "answer": 0,
+          "hint": "Big elephants can always understand small elephants.",
+          "fact": "Because is spelled b-e-c-a-u-s-e."
+        },
+        {
+          "type": "choice",
+          "id": "word-7",
+          "prompt": "What is the opposite of up?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "high"
+            },
+            {
+              "label": "tall"
+            },
+            {
+              "label": "down"
+            },
+            {
+              "label": "top"
+            }
+          ],
+          "answer": 2,
+          "hint": "Think of a slide.",
+          "fact": "Down is the opposite of up."
+        },
+        {
+          "type": "choice",
+          "id": "word-8",
+          "prompt": "Which word rhymes with moon?",
+          "layout": "list",
+          "options": [
+            {
+              "label": "mouse"
+            },
+            {
+              "label": "mud"
+            },
+            {
+              "label": "spoon"
+            },
+            {
+              "label": "mint"
+            }
+          ],
+          "answer": 2,
+          "hint": "Listen to the end sound.",
+          "fact": "Moon and spoon both end with the sound oon."
+        }
       ]
     }
   ]

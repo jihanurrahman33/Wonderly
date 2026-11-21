@@ -1,6 +1,6 @@
 # 0001. Offline-first with a validated seed question bank
 
-Status: Accepted
+Status: Accepted. Amended by [0005](0005-llm-fills-a-bank-not-live.md): the bundled bank is now only a safety net, and the `INTERNET` permission exists solely for the one-time, grown-up-approved model download.
 
 ## Context
 

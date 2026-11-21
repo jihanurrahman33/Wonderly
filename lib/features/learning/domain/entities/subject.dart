@@ -3,7 +3,9 @@ enum Subject {
   zoology('Zoology'),
   geometry('Geometry'),
   plants('Plants'),
-  logic('Logic');
+  logic('Logic'),
+  numbers('Numbers'),
+  words('Words');
 
   const Subject(this.label);
 

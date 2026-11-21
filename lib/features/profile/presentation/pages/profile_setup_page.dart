@@ -15,11 +15,16 @@ import 'package:wonderly/features/profile/presentation/widgets/buddy_avatar.dart
 
 /// Create the learner profile, or edit it when one already exists.
 class ProfileSetupPage extends StatelessWidget {
-  const ProfileSetupPage({super.key});
+  const ProfileSetupPage({this.addLearner = false, super.key});
+
+  /// Create another learner instead of editing the active one.
+  final bool addLearner;
 
   @override
   Widget build(BuildContext context) {
-    final existing = context.read<ProfileCubit>().state.profile;
+    final existing = addLearner
+        ? null
+        : context.read<ProfileCubit>().state.profile;
     return BlocProvider(
       create: (_) => sl<ProfileSetupCubit>(param1: existing),
       child: _ProfileSetupView(isEditing: existing != null),

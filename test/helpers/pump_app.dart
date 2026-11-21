@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wonderly/app.dart';
 import 'package:wonderly/core/di/injection.dart';
 
+import 'fake_ai.dart';
+
 bool _fontsLoaded = false;
 
 /// Loads the bundled fonts so tests measure text with real glyph widths
@@ -34,6 +36,10 @@ Future<void> pumpWonderly(
   WidgetTester tester, {
   Map<String, Object?>? profile,
   Map<String, Object> extra = const {},
+  FakeLlm? llm,
+  FakeModelManager? models,
+  FakeDeviceStatus? device,
+  FakeSound? sound,
 }) async {
   await loadAppFonts();
   tester.view.physicalSize = const Size(390 * 2, 844 * 2);
@@ -51,6 +57,11 @@ Future<void> pumpWonderly(
     // Read from disk so the test clock never waits on platform asset I/O.
     loadCatalogJson: () async =>
         File('assets/data/questions.json').readAsStringSync(),
+    // No platform channels in tests: the model, device and audio are fakes.
+    llm: llm ?? FakeLlm(ready: false),
+    modelManager: models ?? FakeModelManager(),
+    deviceStatus: device ?? FakeDeviceStatus(),
+    sound: sound ?? FakeSound(),
   );
   await tester.pumpWidget(const WonderlyApp());
   await tester.pumpAndSettle();
@@ -60,4 +71,6 @@ Future<void> pumpWonderly(
 Future<void> disposeApp(WidgetTester tester) async {
   await tester.pumpWidget(const SizedBox.shrink());
   await tester.pump();
+  // Close app-wide cubits so no timer or subscription outlives the test.
+  await tester.runAsync(sl.reset);
 }

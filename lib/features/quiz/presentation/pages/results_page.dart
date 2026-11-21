@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wonderly/core/router/routes.dart';
+import 'package:wonderly/core/services/sound_service.dart';
 import 'package:wonderly/core/theme/app_colors.dart';
 import 'package:wonderly/core/theme/app_text.dart';
 import 'package:wonderly/core/widgets/art_view.dart';
+import 'package:wonderly/core/widgets/play_sound_once.dart';
 import 'package:wonderly/core/widgets/wonder_button.dart';
 import 'package:wonderly/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:wonderly/features/quiz/domain/quiz_summary.dart';
@@ -39,6 +41,7 @@ class ResultsPage extends StatelessWidget {
         child: Stack(
           children: [
             const _Confetti(),
+            const PlaySoundOnce(SoundEffect.complete),
             LayoutBuilder(
               builder: (context, constraints) => SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 28),

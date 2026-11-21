@@ -7,6 +7,7 @@ import 'package:wonderly/features/learning/data/asset_catalog_repository.dart';
 import 'package:wonderly/features/learning/data/catalog_parser.dart';
 import 'package:wonderly/features/learning/domain/entities/question.dart';
 import 'package:wonderly/features/learning/domain/entities/quiz_set.dart';
+import 'package:wonderly/features/learning/domain/entities/set_blueprint.dart';
 import 'package:wonderly/features/learning/domain/entities/subject.dart';
 import 'package:wonderly/features/learning/domain/services/learning_stats.dart';
 import 'package:wonderly/features/learning/domain/usecases/validate_question.dart';
@@ -193,19 +194,23 @@ void main() {
       expect(parsed, authored);
     });
 
-    test('has content for every subject and unique question ids', () {
-      for (final subject in Subject.values) {
+    test(
+      'is only a safety net: sets match the curriculum and ids are unique',
+      () {
+        final curriculum = Curriculum.blueprints.map((b) => b.id).toSet();
         expect(
-          catalog.questionCountFor(subject),
-          greaterThan(0),
-          reason: '$subject',
+          catalog.sets.map((s) => s.id).toSet().difference(curriculum),
+          isEmpty,
         );
-      }
-      final ids = [
-        for (final s in catalog.sets) ...s.questions.map((q) => q.id),
-      ];
-      expect(ids.toSet().length, ids.length);
-    });
+        final ids = [
+          for (final s in catalog.sets) ...s.questions.map((q) => q.id),
+        ];
+        expect(ids.toSet().length, ids.length);
+        // Procedural sets are generated, never stored.
+        expect(catalog.setById('logic_puzzles'), isNull);
+        expect(catalog.setById('word_wizard'), isNotNull);
+      },
+    );
 
     test('the Zoology Quiz matches the design reference', () {
       final set = catalog.setById('zoology_quiz')!;
@@ -213,24 +218,6 @@ void main() {
       final third = set.questions[2] as ChoiceQuestion;
       expect(third.prompt, 'Which animal is an apex predator?');
       expect(third.options[third.answerIndex].label, 'Lion');
-    });
-
-    test('every pattern really repeats to the stated answer', () {
-      for (final set in catalog.sets) {
-        for (final q in set.questions.whereType<PatternQuestion>()) {
-          final seq = q.sequence;
-          final answer = q.options[q.answerIndex];
-          // Find the shortest period that explains the visible sequence.
-          var matched = false;
-          for (var period = 1; period < seq.length && !matched; period++) {
-            final fits = [
-              for (var i = 0; i < seq.length; i++) seq[i] == seq[i % period],
-            ].every((e) => e);
-            if (fits) matched = seq[seq.length % period] == answer;
-          }
-          expect(matched, isTrue, reason: q.id);
-        }
-      }
     });
 
     test('the locked Ocean life set requires stars', () {

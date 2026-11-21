@@ -28,7 +28,7 @@ session) and simpler state holders (settings, profile).
 
 ## Consequences
 
-- Rules are fast to test (140 tests run in seconds).
+- Rules are fast to test (more than 200 tests run in seconds).
 - Slightly more files than a single-layer app; accepted for clarity.
 - The service locator is visible in a few `State` fields and route builders.
   It is not used inside domain or data code.

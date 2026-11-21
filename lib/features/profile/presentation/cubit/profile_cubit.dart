@@ -6,41 +6,63 @@ import 'package:wonderly/features/profile/domain/repositories/profile_repository
 enum ProfileStatus { loading, ready, failure }
 
 class ProfileState extends Equatable {
-  const ProfileState({this.status = ProfileStatus.loading, this.profile});
+  const ProfileState({
+    this.status = ProfileStatus.loading,
+    this.roster = const LearnerRoster(),
+  });
 
   final ProfileStatus status;
+  final LearnerRoster roster;
 
-  /// `null` until the child finishes profile setup.
-  final LearnerProfile? profile;
+  /// The learner who is playing, or `null` before profile setup.
+  LearnerProfile? get profile => roster.active;
+
+  List<LearnerProfile> get learners => roster.learners;
 
   bool get hasProfile => profile != null;
 
   @override
-  List<Object?> get props => [status, profile];
+  List<Object?> get props => [status, roster];
 }
 
-/// Holds the active learner profile for the whole app.
+/// Holds the learners on this device and who is active.
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit(this._repository) : super(const ProfileState());
+  ProfileCubit(this._repository, {Future<void> Function(String id)? onRemoved})
+    : _onRemoved = onRemoved,
+      super(const ProfileState());
 
   final ProfileRepository _repository;
+  final Future<void> Function(String id)? _onRemoved;
 
   Future<void> load() async {
     final result = await _repository.load();
     emit(
       result.fold(
-        onSuccess: (p) => ProfileState(status: ProfileStatus.ready, profile: p),
+        onSuccess: (r) => ProfileState(status: ProfileStatus.ready, roster: r),
         onFailure: (_) => const ProfileState(status: ProfileStatus.failure),
       ),
     );
   }
 
-  /// Saves [profile]. Returns `false` if it could not be stored.
-  Future<bool> save(LearnerProfile profile) async {
-    final result = await _repository.save(profile);
+  /// Adds or updates [profile] and makes it the active learner.
+  /// Returns `false` if it could not be stored.
+  Future<bool> save(LearnerProfile profile) =>
+      _apply((r) => r.upsertActive(profile));
+
+  Future<bool> switchTo(String id) => _apply((r) => r.withActive(id));
+
+  /// Removes a learner and erases their progress.
+  Future<bool> remove(String id) async {
+    final ok = await _apply((r) => r.without(id));
+    if (ok) await _onRemoved?.call(id);
+    return ok;
+  }
+
+  Future<bool> _apply(LearnerRoster Function(LearnerRoster) transform) async {
+    final result = await _repository.update(transform);
     return result.fold(
-      onSuccess: (saved) {
-        emit(ProfileState(status: ProfileStatus.ready, profile: saved));
+      onSuccess: (r) {
+        emit(ProfileState(status: ProfileStatus.ready, roster: r));
         return true;
       },
       onFailure: (_) => false,

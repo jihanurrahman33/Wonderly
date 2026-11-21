@@ -17,6 +17,7 @@ class LearnerProgress extends Equatable {
     this.bestStreak = 0,
     this.currentRun = 0,
     this.bestRun = 0,
+    this.setRounds = const {},
   });
 
   factory LearnerProgress.fromJson(Map<String, Object?> json) {
@@ -48,6 +49,7 @@ class LearnerProgress extends Equatable {
       bestStreak: json['bestStreak'] as int? ?? 0,
       currentRun: json['currentRun'] as int? ?? 0,
       bestRun: json['bestRun'] as int? ?? 0,
+      setRounds: intMap(json['setRounds']),
     );
   }
 
@@ -72,6 +74,9 @@ class LearnerProgress extends Equatable {
   final int currentRun;
   final int bestRun;
 
+  /// How many times each set has been completed (selects fresh questions).
+  final Map<String, int> setRounds;
+
   /// Questions the child has finished in a set (full length once completed).
   int doneIn(String setId, int setLength) {
     if (completedSetIds.contains(setId)) return setLength;
@@ -91,6 +96,7 @@ class LearnerProgress extends Equatable {
     int? bestStreak,
     int? currentRun,
     int? bestRun,
+    Map<String, int>? setRounds,
   }) {
     return LearnerProgress(
       stars: stars ?? this.stars,
@@ -105,6 +111,7 @@ class LearnerProgress extends Equatable {
       bestStreak: bestStreak ?? this.bestStreak,
       currentRun: currentRun ?? this.currentRun,
       bestRun: bestRun ?? this.bestRun,
+      setRounds: setRounds ?? this.setRounds,
     );
   }
 
@@ -121,6 +128,7 @@ class LearnerProgress extends Equatable {
     'bestStreak': bestStreak,
     'currentRun': currentRun,
     'bestRun': bestRun,
+    'setRounds': setRounds,
   };
 
   @override
@@ -137,5 +145,6 @@ class LearnerProgress extends Equatable {
     bestStreak,
     currentRun,
     bestRun,
+    setRounds,
   ];
 }

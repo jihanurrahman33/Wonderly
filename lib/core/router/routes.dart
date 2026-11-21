@@ -13,6 +13,10 @@ abstract final class Routes {
   static const settings = '/settings';
   static const parentGate = '/parent-gate';
   static const grownUps = '/grown-ups';
+  static const smartBuddy = '/smart-buddy';
+
+  /// Pages that need the parent gate, and where the gate may send you.
+  static const parentOnly = {grownUps, smartBuddy};
   static const results = '/results';
 
   static const subjectParam = 'subject';

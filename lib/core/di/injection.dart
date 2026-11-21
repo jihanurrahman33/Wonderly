@@ -1,11 +1,25 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wonderly/core/services/feedback_service.dart';
+import 'package:wonderly/core/services/sound_service.dart';
 import 'package:wonderly/core/services/speech_service.dart';
 import 'package:wonderly/core/storage/key_value_store.dart';
 import 'package:wonderly/core/utils/clock.dart';
+import 'package:wonderly/features/ai/data/edge_ai_llm_client.dart';
+import 'package:wonderly/features/ai/data/edge_ai_model_manager.dart';
+import 'package:wonderly/features/ai/data/generated_bank_repository_impl.dart';
+import 'package:wonderly/features/ai/data/plus_device_status.dart';
+import 'package:wonderly/features/ai/domain/entities/model_profile.dart';
+import 'package:wonderly/features/ai/domain/entities/model_status.dart';
+import 'package:wonderly/features/ai/domain/repositories/generated_bank_repository.dart';
+import 'package:wonderly/features/ai/domain/services/device_status.dart';
+import 'package:wonderly/features/ai/domain/services/llm_client.dart';
+import 'package:wonderly/features/ai/domain/services/model_manager.dart';
+import 'package:wonderly/features/ai/domain/usecases/bank_filler.dart';
+import 'package:wonderly/features/ai/presentation/cubit/generation_cubit.dart';
+import 'package:wonderly/features/ai/presentation/cubit/model_cubit.dart';
 import 'package:wonderly/features/learning/data/asset_catalog_repository.dart';
-import 'package:wonderly/features/learning/domain/repositories/catalog_repository.dart';
+import 'package:wonderly/features/learning/data/live_catalog_repository.dart';
 import 'package:wonderly/features/learning/presentation/cubit/catalog_cubit.dart';
 import 'package:wonderly/features/parent/domain/parent_access.dart';
 import 'package:wonderly/features/parent/presentation/cubit/parent_gate_cubit.dart';
@@ -29,9 +43,16 @@ import 'package:wonderly/features/settings/presentation/cubit/settings_cubit.dar
 final sl = GetIt.instance;
 
 /// Registers every dependency. Safe to call again after [sl.reset].
+///
+/// Tests override [loadCatalogJson] (the bundled safety-net questions),
+/// [llm] (the on-device model) and [modelManager].
 Future<void> configureDependencies({
   SharedPreferences? preferences,
   Future<String> Function()? loadCatalogJson,
+  LlmClient? llm,
+  ModelManager? modelManager,
+  DeviceStatus? deviceStatus,
+  SoundService? sound,
 }) async {
   final prefs = preferences ?? await SharedPreferences.getInstance();
 
@@ -41,6 +62,13 @@ Future<void> configureDependencies({
     ..registerSingleton<KeyValueStore>(SharedPrefsStore(prefs))
     ..registerLazySingleton<SpeechService>(FlutterTtsSpeechService.new)
     ..registerSingleton<FeedbackService>(const HapticFeedbackService())
+    ..registerLazySingleton<SoundService>(
+      () =>
+          sound ??
+          AudioplayersSoundService(
+            effectsEnabled: () => sl<SettingsCubit>().state.soundEffects,
+          ),
+    )
     // Repositories
     ..registerLazySingleton<ProfileRepository>(
       () => ProfileRepositoryImpl(sl()),
@@ -51,22 +79,72 @@ Future<void> configureDependencies({
     ..registerLazySingleton<SettingsRepository>(
       () => SettingsRepositoryImpl(sl()),
     )
-    ..registerLazySingleton<CatalogRepository>(
+    ..registerLazySingleton<GeneratedBankRepository>(
+      () => GeneratedBankRepositoryImpl(sl()),
+    )
+    ..registerLazySingleton(
       () => AssetCatalogRepository(loadJson: loadCatalogJson),
     )
+    ..registerLazySingleton(
+      () => LiveCatalogRepository(
+        seed: sl<AssetCatalogRepository>(),
+        bank: sl(),
+        profile: sl(),
+        progress: sl(),
+        clock: sl(),
+      ),
+    )
+    // On-device AI
+    ..registerLazySingleton<ModelManager>(
+      () => modelManager ?? EdgeAiModelManager(),
+    )
+    ..registerLazySingleton<DeviceStatus>(
+      () => deviceStatus ?? PlusDeviceStatus(),
+    )
+    ..registerLazySingleton<LlmClient>(() => llm ?? EdgeAiLlmClient(sl()))
+    ..registerLazySingleton(() => BankFiller(llm: sl(), bank: sl()))
     // Use cases
     ..registerLazySingleton(() => RecordAnswer(sl(), sl()))
     ..registerLazySingleton(() => RecordPlayTime(sl(), sl()))
     ..registerLazySingleton(() => ParentAccess(sl()))
     // App-wide state
-    ..registerLazySingleton(() => ProfileCubit(sl()))
-    ..registerLazySingleton(() => ProgressCubit(sl(), sl()))
-    ..registerLazySingleton(() => SettingsCubit(sl()))
-    ..registerLazySingleton(() => CatalogCubit(sl()))
+    ..registerLazySingleton(
+      () => ProfileCubit(sl(), onRemoved: sl<ProgressRepository>().deleteFor),
+      dispose: (c) => c.close(),
+    )
+    ..registerLazySingleton(
+      () => ProgressCubit(sl(), sl()),
+      dispose: (c) => c.close(),
+    )
+    ..registerLazySingleton(
+      () => SettingsCubit(sl()),
+      dispose: (c) => c.close(),
+    )
+    ..registerLazySingleton(
+      () => CatalogCubit(
+        sl<LiveCatalogRepository>(),
+        changes: sl<LiveCatalogRepository>().changes,
+      ),
+      dispose: (c) => c.close(),
+    )
+    ..registerLazySingleton(
+      () => ModelCubit(sl(), sl()),
+      dispose: (c) => c.close(),
+    )
+    ..registerLazySingleton(
+      () => GenerationCubit(
+        filler: sl(),
+        bank: sl(),
+        device: sl(),
+        isModelReady: () => sl<ModelManager>().current is ModelInstalled,
+        isEnabled: () => sl<SettingsCubit>().state.aiEnabled,
+        currentGrade: () => sl<ProfileCubit>().state.profile?.grade ?? 3,
+      ),
+    )
     // Per-screen state
     ..registerFactory(
       () => QuizBloc(
-        catalog: sl(),
+        catalog: sl<LiveCatalogRepository>(),
         progress: sl(),
         settings: sl(),
         recordAnswer: sl(),
@@ -79,3 +157,7 @@ Future<void> configureDependencies({
       (initial, _) => ProfileSetupCubit(sl(), initial: initial),
     );
 }
+
+/// The model profile a grown-up chose.
+ModelProfile chosenModelProfile() =>
+    ModelProfile.fromName(sl<SettingsCubit>().state.modelProfile);

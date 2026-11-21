@@ -8,6 +8,12 @@ abstract interface class ProgressRepository {
 
   Future<Result<LearnerProgress>> load();
 
+  /// Switches to the progress of [learnerId] and emits it on [watch].
+  Future<void> bindTo(String learnerId);
+
+  /// Erases the progress stored for [learnerId].
+  Future<void> deleteFor(String learnerId);
+
   /// Atomically transforms the stored progress and persists the result.
   Future<Result<LearnerProgress>> update(
     LearnerProgress Function(LearnerProgress current) transform,
