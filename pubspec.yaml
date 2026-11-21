@@ -1,0 +1,50 @@
+name: wonderly
+description: "Wonderly - a playful, offline-first learning app for kids in grades 1 to 5."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_bloc: ^9.1.1
+  equatable: ^3.0.0
+
+  # Navigation and dependency injection
+  go_router: ^18.1.4
+  get_it: ^9.3.0
+
+  # Local persistence (the app is fully offline, no backend)
+  shared_preferences: ^2.5.6
+
+  # UI and platform services
+  flutter_svg: ^2.5.0
+  flutter_tts: ^4.2.5
+  bloc_concurrency: ^0.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.5
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/svg/
+    - assets/data/
+
+  fonts:
+    # Variable fonts (SIL OFL 1.1). Bundled so the app never touches the network.
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/Fredoka.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito.ttf
