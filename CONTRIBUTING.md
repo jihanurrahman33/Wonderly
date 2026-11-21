@@ -39,8 +39,10 @@ Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`.
 
 ## Kids app rules (non-negotiable)
 
-- No network access, analytics, advertising or crash SDKs that collect
-  personal data without an ADR and a policy review.
+- No network access beyond the grown-up-approved model download, and no
+  analytics, advertising or crash SDKs that collect personal data, without an
+  ADR and a policy review.
+- Anything a model writes must pass validation before a child can see it.
 - No outbound links or purchases reachable by a child.
 - Every new control needs a semantic label and a 48 dp touch target, and must
   work at the largest text size on a 320 x 568 screen.

@@ -40,7 +40,6 @@ conventions.
 | Demo data (Alex, 26 stars, 4-day streak) | Real persisted state, starting at zero | The design is a mock-up |
 | "Continue (demo)" on the parent gate | Removed | A bypass defeats the gate |
 | Gate answer boxes show fixed `7 x 4` | Random 6-9 factors, lockout after 3 misses | Memorisable questions are weak gates |
-| "Switch learner" on Profile | Omitted | One learner per install in v1; avoids a destructive profile swap |
 | Home hero uses the cat | Uses the child's chosen buddy | Personalisation |
 | Quiz feedback "Roar-some!" | Generic cheers, plus the question's own fact | Wording must fit every subject |
 | Wrong-answer line "You will see this again soon" | "Every try helps you learn" | The app does not re-queue missed questions, so the promise would be false |
@@ -49,8 +48,11 @@ conventions.
 | Review answers (no detail in design) | Bottom sheet listing each answer | Needed a real behaviour behind the button |
 | Locked "Ocean life" | Unlocks at 30 stars as written | Matches design copy |
 | Settings: bedtime toggle | Requires the parent gate | A child could otherwise switch bedtime mode off |
-| Numbers / Words tiles | "Coming soon" snackbar | Content not designed yet |
+| Numbers / Words tiles | Real subjects (Dart-generated numbers, model-written words) | Content now exists |
+| Subject and set content | Generated on the device, not hand-written | On-device AI requirement |
+| "Switch learner" | Bottom sheet; removal lives in the grown-ups zone | Several learners per phone |
 
-Screens not in the design but required for a working product: the **break
-screen** (shown when the daily limit or bedtime ends play) and the
-**help / privacy sheets** in Settings.
+Screens and surfaces not in the design but required for a working product: the **break
+screen** (daily limit or bedtime), the **help / privacy sheets**, the **Smart Buddy**
+setup page, the **Smart Buddy card** (A2UI) on Home and in the grown-ups zone, and the
+**learner switcher**.

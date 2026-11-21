@@ -1,8 +1,8 @@
 # Security policy
 
 Wonderly is an offline app for children. It stores a first name, a chosen
-animal buddy, a grade and learning progress on the device only, and it has no
-network code.
+animal buddy, a grade and learning progress on the device only, and it uses the network only
+to download its on-device model after a grown-up approves it.
 
 ## Reporting a vulnerability
 
