@@ -34,6 +34,12 @@ class SettingsCubit extends Cubit<AppSettings> {
   Future<void> setWeeklyReport({required bool value}) =>
       _update((s) => s.copyWith(weeklyReport: value));
 
+  Future<void> setAiEnabled({required bool value}) =>
+      _update((s) => s.copyWith(aiEnabled: value));
+
+  Future<void> setModelProfile(String name) =>
+      _update((s) => s.copyWith(modelProfile: name));
+
   Future<void> setTextSize(TextSize size) =>
       _update((s) => s.copyWith(textSize: size));
 

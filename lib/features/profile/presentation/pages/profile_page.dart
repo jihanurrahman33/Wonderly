@@ -9,6 +9,7 @@ import 'package:wonderly/core/widgets/wonder_widgets.dart';
 import 'package:wonderly/features/profile/domain/entities/learner_profile.dart';
 import 'package:wonderly/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:wonderly/features/profile/presentation/widgets/buddy_avatar.dart';
+import 'package:wonderly/features/profile/presentation/widgets/learner_switcher_sheet.dart';
 import 'package:wonderly/features/progress/presentation/cubit/progress_cubit.dart';
 
 /// "Me" tab: the learner's summary and shortcuts.
@@ -77,6 +78,11 @@ class ProfilePage extends StatelessWidget {
           icon: Icons.pets_rounded,
           label: 'Change my buddy',
           onTap: () => context.push(Routes.profileSetup),
+        ),
+        _MenuRow(
+          icon: Icons.switch_account_rounded,
+          label: 'Switch learner',
+          onTap: () => showLearnerSwitcher(context),
         ),
         _MenuRow(
           icon: Icons.insights_rounded,

@@ -47,6 +47,7 @@ abstract final class ProgressReducer {
     final cursor = {...progress.setCursor};
     final completed = {...progress.completedSetIds};
     final completedSubjects = {...progress.completedSubjects};
+    final rounds = {...progress.setRounds};
     final nextIndex = (cursor[setId] ?? 0) + 1;
     var completedSet = false;
     if (nextIndex >= setLength) {
@@ -54,6 +55,7 @@ abstract final class ProgressReducer {
       completedSet = true;
       if (completed.add(setId)) stars += AppConstants.starsForFirstCompletion;
       completedSubjects.add(subject);
+      rounds[setId] = (rounds[setId] ?? 0) + 1;
     } else {
       cursor[setId] = nextIndex;
     }
@@ -65,6 +67,7 @@ abstract final class ProgressReducer {
       setCursor: cursor,
       completedSetIds: completed,
       completedSubjects: completedSubjects,
+      setRounds: rounds,
       correctQuestionIds: correctIds,
       dailyStars: _add(progress.dailyStars, day, stars),
       activeDays: activeDays,

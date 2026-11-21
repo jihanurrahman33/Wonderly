@@ -1,11 +1,13 @@
 import 'package:wonderly/core/error/result.dart';
 import 'package:wonderly/features/profile/domain/entities/learner_profile.dart';
 
-/// Persistence contract for the active learner profile.
+/// Persistence contract for the learners on this device.
 abstract interface class ProfileRepository {
-  /// Loads the saved profile, or `null` before onboarding is complete.
-  Future<Result<LearnerProfile?>> load();
+  /// Loads the roster. Empty before onboarding is complete.
+  Future<Result<LearnerRoster>> load();
 
-  /// Saves [profile], replacing any existing one.
-  Future<Result<LearnerProfile>> save(LearnerProfile profile);
+  /// Atomically transforms and persists the roster.
+  Future<Result<LearnerRoster>> update(
+    LearnerRoster Function(LearnerRoster current) transform,
+  );
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wonderly/core/constants/app_constants.dart';
 import 'package:wonderly/features/profile/domain/entities/learner_profile.dart';
 import 'package:wonderly/features/profile/domain/usecases/validate_profile.dart';
@@ -57,7 +58,9 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
     this._profileCubit, {
     ValidateProfile validate = const ValidateProfile(),
     LearnerProfile? initial,
+    String Function()? newId,
   }) : _validate = validate,
+       _id = initial?.id ?? (newId ?? const Uuid().v4)(),
        super(
          initial == null
              ? const ProfileSetupState()
@@ -70,6 +73,9 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
 
   final ProfileCubit _profileCubit;
   final ValidateProfile _validate;
+
+  /// Id of the learner being created or edited.
+  final String _id;
 
   void selectBuddy(Buddy buddy) => emit(state.copyWith(buddy: buddy));
 
@@ -90,6 +96,7 @@ class ProfileSetupCubit extends Cubit<ProfileSetupState> {
       name: state.name,
       grade: state.grade,
       buddy: state.buddy,
+      id: _id,
     );
     final profile = result.valueOrNull;
     if (profile == null) {

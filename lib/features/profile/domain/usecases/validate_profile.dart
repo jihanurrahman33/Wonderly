@@ -11,6 +11,7 @@ class ValidateProfile {
     required String name,
     required int grade,
     required Buddy buddy,
+    String id = LearnerProfile.legacyId,
   }) {
     final trimmed = name.trim().replaceAll(RegExp(r'\s+'), ' ');
     if (trimmed.isEmpty) {
@@ -27,7 +28,7 @@ class ValidateProfile {
       return const Result.failure(ValidationFailure('Please pick your grade.'));
     }
     return Result.success(
-      LearnerProfile(name: trimmed, grade: grade, buddy: buddy),
+      LearnerProfile(id: id, name: trimmed, grade: grade, buddy: buddy),
     );
   }
 }

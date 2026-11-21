@@ -12,11 +12,14 @@ import 'package:wonderly/core/widgets/wonder_button.dart';
 import 'package:wonderly/core/widgets/wonder_progress_bar.dart';
 import 'package:wonderly/core/widgets/wonder_switch.dart';
 import 'package:wonderly/core/widgets/wonder_widgets.dart';
+import 'package:wonderly/features/ai/presentation/a2ui/buddy_agent.dart';
+import 'package:wonderly/features/ai/presentation/widgets/buddy_surface.dart';
 import 'package:wonderly/features/learning/domain/entities/quiz_set.dart';
 import 'package:wonderly/features/learning/domain/entities/subject.dart';
 import 'package:wonderly/features/learning/domain/services/learning_stats.dart';
 import 'package:wonderly/features/learning/presentation/cubit/catalog_cubit.dart';
 import 'package:wonderly/features/parent/domain/parent_access.dart';
+import 'package:wonderly/features/profile/domain/entities/learner_profile.dart';
 import 'package:wonderly/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:wonderly/features/profile/presentation/widgets/buddy_avatar.dart';
 import 'package:wonderly/features/progress/domain/entities/learner_progress.dart';
@@ -106,7 +109,15 @@ class GrownUpsPage extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 14),
+            if (settings.weeklyReport) ...[
+              const BuddySurface(kind: BuddyKind.report),
+              const SizedBox(height: 14),
+            ],
             _WeekCard(seconds: weekSeconds, goalSeconds: goalSeconds),
+            const SizedBox(height: 14),
+            _SmartBuddyLink(onTap: () => context.push(Routes.smartBuddy)),
+            const SizedBox(height: 14),
+            const _LearnersCard(),
             const SizedBox(height: 14),
             if (catalog != null)
               _FocusCard(catalog: catalog, progress: progress),
@@ -128,7 +139,7 @@ class GrownUpsPage extends StatelessWidget {
                   const Divider(height: 1, color: AppColors.cream),
                   _SwitchRow(
                     icon: Icons.mail_outline_rounded,
-                    label: 'Weekly report',
+                    label: 'Weekly note from Smart Buddy',
                     value: settings.weeklyReport,
                     onChanged: (v) => cubit.setWeeklyReport(value: v),
                   ),
@@ -376,5 +387,116 @@ class _SwitchRow extends StatelessWidget {
         WonderSwitch(value: value, onChanged: onChanged, label: label),
       ],
     );
+  }
+}
+
+class _SmartBuddyLink extends StatelessWidget {
+  const _SmartBuddyLink({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Smart Buddy, on-device AI settings',
+      excludeSemantics: true,
+      child: Material(
+        color: AppColors.sage,
+        borderRadius: BorderRadius.circular(26),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(26),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Row(
+              children: [
+                const Icon(Icons.auto_awesome_rounded, color: AppColors.olive),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Smart Buddy (on-device AI)',
+                        style: AppText.heading(17),
+                      ),
+                      Text(
+                        'Model, quiz writing and storage',
+                        style: AppText.subtitle(14),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right_rounded),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Grown-ups can remove a learner (and their progress) here.
+class _LearnersCard extends StatelessWidget {
+  const _LearnersCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<ProfileCubit>().state;
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Learners on this phone', style: AppText.heading(19)),
+          const SizedBox(height: 8),
+          for (final learner in state.learners)
+            Row(
+              children: [
+                BuddyAvatar(buddy: learner.buddy, size: 40),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    '${learner.name} · ${Formatters.grade(learner.grade)}',
+                    style: AppText.body(16),
+                  ),
+                ),
+                if (state.learners.length > 1)
+                  IconButton(
+                    tooltip: 'Remove ${learner.name}',
+                    onPressed: () => _confirm(context, learner),
+                    icon: const Icon(Icons.delete_outline_rounded),
+                  ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _confirm(BuildContext context, LearnerProfile learner) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Remove ${learner.name}?'),
+        content: const Text(
+          'Their stars, badges and progress will be erased. This cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Keep'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+    if ((ok ?? false) && context.mounted) {
+      await context.read<ProfileCubit>().remove(learner.id);
+    }
   }
 }

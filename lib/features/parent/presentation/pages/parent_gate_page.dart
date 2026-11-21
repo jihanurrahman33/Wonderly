@@ -15,19 +15,26 @@ import 'package:wonderly/features/parent/presentation/cubit/parent_gate_cubit.da
 
 /// Quick maths question that keeps children out of the grown-ups zone.
 class ParentGatePage extends StatelessWidget {
-  const ParentGatePage({super.key});
+  const ParentGatePage({this.next, super.key});
+
+  /// Where to go after the gate (must be a parent-only page).
+  final String? next;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<ParentGateCubit>(),
-      child: const _GateView(),
+      child: _GateView(
+        destination: Routes.parentOnly.contains(next) ? next! : Routes.grownUps,
+      ),
     );
   }
 }
 
 class _GateView extends StatefulWidget {
-  const _GateView();
+  const _GateView({required this.destination});
+
+  final String destination;
 
   @override
   State<_GateView> createState() => _GateViewState();
@@ -66,7 +73,7 @@ class _GateViewState extends State<_GateView> {
       listenWhen: (a, b) => !a.verified && b.verified,
       listener: (context, state) {
         sl<ParentAccess>().grant();
-        context.pushReplacement(Routes.grownUps);
+        context.pushReplacement(widget.destination);
       },
       builder: _build,
     );

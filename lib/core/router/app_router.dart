@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wonderly/core/router/routes.dart';
 import 'package:wonderly/core/widgets/app_shell.dart';
+import 'package:wonderly/features/ai/presentation/pages/smart_buddy_page.dart';
 import 'package:wonderly/features/home/presentation/pages/home_page.dart';
 import 'package:wonderly/features/learning/presentation/pages/subject_page.dart';
 import 'package:wonderly/features/learning/presentation/pages/subjects_page.dart';
@@ -56,8 +57,8 @@ GoRouter buildRouter({
       if (!profile.hasProfile && !Routes.publicLocations.contains(location)) {
         return Routes.splash;
       }
-      if (location == Routes.grownUps && !parentAccess.isActive) {
-        return Routes.parentGate;
+      if (Routes.parentOnly.contains(location) && !parentAccess.isActive) {
+        return '${Routes.parentGate}?next=${Uri.encodeComponent(location)}';
       }
       return null;
     },
@@ -72,7 +73,9 @@ GoRouter buildRouter({
       ),
       GoRoute(
         path: Routes.profileSetup,
-        builder: (context, state) => const ProfileSetupPage(),
+        builder: (context, state) => ProfileSetupPage(
+          addLearner: state.uri.queryParameters['new'] == '1',
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppShell(navigationShell: shell),
@@ -145,11 +148,16 @@ GoRouter buildRouter({
       ),
       GoRoute(
         path: Routes.parentGate,
-        builder: (context, state) => const ParentGatePage(),
+        builder: (context, state) =>
+            ParentGatePage(next: state.uri.queryParameters['next']),
       ),
       GoRoute(
         path: Routes.grownUps,
         builder: (context, state) => const GrownUpsPage(),
+      ),
+      GoRoute(
+        path: Routes.smartBuddy,
+        builder: (context, state) => const SmartBuddyPage(),
       ),
       GoRoute(
         path: Routes.settings,

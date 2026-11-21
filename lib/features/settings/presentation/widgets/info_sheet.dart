@@ -9,7 +9,8 @@ abstract final class InfoCopy {
       'Wonderly works without internet.\n\n'
       '• Tap Read aloud on a question to hear it.\n'
       '• Tap Hint if you are stuck.\n'
-      '• Grown-ups can set a daily play limit in the Grown-ups zone.\n\n'
+      '• Grown-ups can set a daily play limit and set up Smart Buddy in the '
+      'Grown-ups zone.\n\n'
       'Questions or ideas? Ask a grown-up to contact the app publisher '
       'through the app store listing.';
 
@@ -17,6 +18,10 @@ abstract final class InfoCopy {
       'Wonderly keeps your child safe.\n\n'
       '• No account, no sign-in and no ads.\n'
       '• Name, buddy and progress stay on this device only.\n'
+      '• Smart Buddy writes quizzes on this phone. Nothing you or your child '
+      'type or answer is ever sent anywhere.\n'
+      '• The only download is the Smart Buddy model file, and only after a '
+      'grown-up approves it.\n'
       '• No analytics or tracking tools are used.\n'
       '• There are no links to other websites or apps.\n\n'
       'Removing the app erases everything it stored.';

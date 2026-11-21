@@ -8,6 +8,9 @@ import 'package:wonderly/core/utils/formatters.dart';
 import 'package:wonderly/core/widgets/art_view.dart';
 import 'package:wonderly/core/widgets/wonder_progress_bar.dart';
 import 'package:wonderly/core/widgets/wonder_widgets.dart';
+import 'package:wonderly/features/ai/presentation/a2ui/buddy_agent.dart';
+import 'package:wonderly/features/ai/presentation/widgets/ai_status_chip.dart';
+import 'package:wonderly/features/ai/presentation/widgets/buddy_surface.dart';
 import 'package:wonderly/features/learning/domain/entities/quiz_set.dart';
 import 'package:wonderly/features/learning/domain/entities/subject.dart';
 import 'package:wonderly/features/learning/domain/services/learning_stats.dart';
@@ -28,6 +31,9 @@ class HomePage extends StatelessWidget {
         children: [
           const _Header(),
           const SizedBox(height: 14),
+          const BuddySurface(kind: BuddyKind.tip),
+          const AiStatusChip(),
+          const SizedBox(height: 14),
           _ContinueCard(catalog: catalog),
           const SizedBox(height: 14),
           const _StreakCard(),
@@ -38,6 +44,8 @@ class HomePage extends StatelessWidget {
             Subject.geometry,
             Subject.plants,
             Subject.logic,
+            Subject.numbers,
+            Subject.words,
           ]) ...[
             _ExploreCard(subject: subject, catalog: catalog),
             const SizedBox(height: 12),

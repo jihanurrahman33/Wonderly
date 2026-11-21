@@ -32,11 +32,20 @@ class ProgressCubit extends Cubit<ProgressState> {
   final Clock _clock;
   StreamSubscription<LearnerProgress>? _subscription;
 
-  Future<void> load() async {
+  /// Loads the progress of [learnerId] and follows its changes.
+  Future<void> load([String? learnerId]) async {
+    if (learnerId != null) await _repository.bindTo(learnerId);
     final result = await _repository.load();
     _emitProgress(result.valueOrNull ?? const LearnerProgress());
     await _subscription?.cancel();
     _subscription = _repository.watch().listen(_emitProgress);
+  }
+
+  /// Switches to another learner's progress.
+  Future<void> switchLearner(String learnerId) async {
+    await _repository.bindTo(learnerId);
+    final result = await _repository.load();
+    _emitProgress(result.valueOrNull ?? const LearnerProgress());
   }
 
   /// Recomputes day-dependent values, for example after the app resumes.

@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wonderly/core/di/injection.dart';
 import 'package:wonderly/core/router/routes.dart';
 import 'package:wonderly/core/services/feedback_service.dart';
+import 'package:wonderly/core/services/sound_service.dart';
 import 'package:wonderly/core/services/speech_service.dart';
 import 'package:wonderly/core/theme/app_colors.dart';
 import 'package:wonderly/core/widgets/wonder_button.dart';
 import 'package:wonderly/core/widgets/wonder_widgets.dart';
+import 'package:wonderly/features/ai/presentation/cubit/generation_cubit.dart';
 import 'package:wonderly/features/learning/domain/entities/question.dart';
 import 'package:wonderly/features/learning/presentation/subject_style.dart';
 import 'package:wonderly/features/quiz/presentation/bloc/quiz_bloc.dart';
@@ -47,11 +51,16 @@ class _QuizView extends StatefulWidget {
 class _QuizViewState extends State<_QuizView> with WidgetsBindingObserver {
   final SpeechService _speech = sl<SpeechService>();
   final FeedbackService _feedback = sl<FeedbackService>();
+  final SoundService _sound = sl<SoundService>();
+
+  final GenerationCubit _generation = sl<GenerationCubit>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // Keep the phone free for the child while a quiz is open.
+    _generation.pause(PauseReason.quizOpen);
   }
 
   @override
@@ -66,6 +75,7 @@ class _QuizViewState extends State<_QuizView> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _speech.stop();
+    unawaited(_generation.resume(PauseReason.quizOpen));
     super.dispose();
   }
 
@@ -84,7 +94,9 @@ class _QuizViewState extends State<_QuizView> with WidgetsBindingObserver {
       return;
     }
     if (state.revealed && state.lastCorrect != null && settings.soundEffects) {
-      state.lastCorrect! ? _feedback.correct() : _feedback.incorrect();
+      final correct = state.lastCorrect!;
+      unawaited(correct ? _feedback.correct() : _feedback.incorrect());
+      unawaited(_sound.play(correct ? SoundEffect.correct : SoundEffect.wrong));
     }
     if (state.saveFailed) {
       ScaffoldMessenger.of(context)
