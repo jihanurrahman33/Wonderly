@@ -46,7 +46,7 @@ jobs:
         run: tool/check_coverage.sh 80
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage/lcov.info
