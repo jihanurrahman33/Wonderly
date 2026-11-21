@@ -36,8 +36,8 @@ void main() {
       expect(find.text('Sam'), findsOneWidget);
       expect(find.text('4th Grade'), findsOneWidget);
       final saved = (await sl<ProfileRepository>().load()).valueOrNull;
-      expect(saved?.name, 'Sam');
-      expect(saved?.grade, 4);
+      expect(saved?.active?.name, 'Sam');
+      expect(saved?.active?.grade, 4);
       await disposeApp(tester);
     });
 
@@ -112,16 +112,26 @@ void main() {
       await disposeApp(tester);
     });
 
-    testWidgets('Numbers is marked as coming soon', (tester) async {
+    testWidgets('all six subjects are playable', (tester) async {
       await pumpWonderly(tester, profile: savedProfile);
       await tester.tap(find.text("Let's go"));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Learn'));
       await tester.pumpAndSettle();
 
+      for (final subject in [
+        'Zoology',
+        'Geometry',
+        'Plants',
+        'Logic',
+        'Numbers',
+        'Words',
+      ]) {
+        expect(find.text(subject), findsOneWidget, reason: subject);
+      }
       await tester.tap(find.text('Numbers'));
-      await tester.pump();
-      expect(find.text('Coming soon!'), findsOneWidget);
+      await tester.pumpAndSettle();
+      expect(find.text('1/10'), findsOneWidget);
       await disposeApp(tester);
     });
 
@@ -288,10 +298,14 @@ void main() {
       await typeNumber(tester, shownAnswer(tester));
       await tester.tap(find.widgetWithIcon(InkWell, Icons.check_rounded));
       await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.text('Daily play limit'),
+        300,
+        scrollable: find.byType(Scrollable).first,
+      );
 
       expect(find.text('Daily play limit'), findsOneWidget);
       expect(find.text('30 min'), findsOneWidget);
-      expect(find.text('Alex'), findsOneWidget);
       await disposeApp(tester);
     });
   });

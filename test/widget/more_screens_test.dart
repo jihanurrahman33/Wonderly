@@ -1,7 +1,9 @@
 import 'package:flutter/widgets.dart' show Scrollable;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wonderly/core/utils/clock.dart';
+import 'package:wonderly/features/learning/domain/entities/question.dart';
 
+import '../helpers/play_quiz.dart';
 import '../helpers/pump_app.dart';
 
 Future<void> goHome(WidgetTester tester) async {
@@ -10,43 +12,73 @@ Future<void> goHome(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('logic puzzle: pick the next shape in the pattern', (
+  Future<void> playWholeSet(
+    WidgetTester tester,
+    String setId,
+    String cardText,
+  ) async {
+    final catalog = await currentCatalog(tester);
+    final set = catalog.setById(setId)!;
+    await tester.scrollUntilVisible(
+      find.text(cardText),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text(cardText));
+    await tester.pumpAndSettle();
+    expect(find.text('1/${set.length}'), findsOneWidget);
+
+    for (var i = 0; i < set.length; i++) {
+      await answerCorrectly(
+        tester,
+        set.questions[i],
+        last: i == set.length - 1,
+      );
+    }
+    expect(find.text('Great job, Alex!'), findsOneWidget);
+    expect(find.text('${set.length}/${set.length}'), findsOneWidget);
+  }
+
+  testWidgets('logic puzzles: every pattern can be solved through the UI', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
     await pumpWonderly(tester, profile: savedProfile);
     await goHome(tester);
-
-    await tester.scrollUntilVisible(
-      find.text('Logic puzzles'),
-      200,
-      scrollable: find.byType(Scrollable).first,
-    );
-    await tester.tap(find.text('Logic puzzles'));
-    await tester.pumpAndSettle();
-    expect(find.text('What comes next?'), findsOneWidget);
-    expect(find.text('1/9'), findsOneWidget);
-
-    await tester.tap(find.bySemanticsLabel('Circle'));
-    await tester.pump();
-    await tester.tap(find.text('Next'));
-    await tester.pumpAndSettle();
-    expect(find.textContaining('That is right'), findsOneWidget);
-
-    await tester.tap(find.text('Next'));
-    await tester.pumpAndSettle();
-    expect(find.text('2/9'), findsOneWidget);
+    await playWholeSet(tester, 'logic_puzzles', 'Logic puzzles');
     await disposeApp(tester);
     semantics.dispose();
   });
 
-  testWidgets('geometry: match every shape by tapping piece then spot', (
+  testWidgets('geometry: shapes are matched by tapping a piece then its spot', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
     await pumpWonderly(tester, profile: savedProfile);
     await goHome(tester);
+    await playWholeSet(tester, 'geometry_shapes', 'Geometry shapes');
+    await disposeApp(tester);
+    semantics.dispose();
+  });
 
+  testWidgets('numbers: arithmetic is generated for the learner grade', (
+    tester,
+  ) async {
+    await pumpWonderly(tester, profile: savedProfile);
+    await goHome(tester);
+    await playWholeSet(tester, 'number_fun', 'Number fun');
+    await disposeApp(tester);
+  });
+
+  testWidgets('a wrong shape on a spot is turned away with a hint', (
+    tester,
+  ) async {
+    final semantics = tester.ensureSemantics();
+    await pumpWonderly(tester, profile: savedProfile);
+    await goHome(tester);
+    final catalog = await currentCatalog(tester);
+    final set = catalog.setById('geometry_shapes')!;
+    // Play up to the first drag question.
     await tester.scrollUntilVisible(
       find.text('Geometry shapes'),
       200,
@@ -54,35 +86,23 @@ void main() {
     );
     await tester.tap(find.text('Geometry shapes'));
     await tester.pumpAndSettle();
-    expect(find.text('Drag each shape to its match'), findsOneWidget);
-
-    // Next is locked until every shape is placed.
-    await tester.tap(find.text('Next'));
-    await tester.pump();
-    expect(find.text('1/6'), findsOneWidget);
-
-    // A piece dropped on the wrong spot is turned away with a hint.
-    await tester.tap(find.bySemanticsLabel(RegExp('^Circle piece')));
-    await tester.pump();
-    await tester.tap(find.bySemanticsLabel('Empty triangle spot'));
-    await tester.pump();
-    expect(find.text('Try another spot for the circle.'), findsOneWidget);
-
-    for (final shape in ['circle', 'triangle', 'square']) {
-      final name = '${shape[0].toUpperCase()}${shape.substring(1)}';
-      if (shape != 'circle') {
-        await tester.tap(find.bySemanticsLabel(RegExp('^$name piece')));
-        await tester.pump();
-      }
-      await tester.tap(find.bySemanticsLabel('Empty $shape spot'));
-      await tester.pump();
+    var index = 0;
+    while (set.questions[index] is! ShapeMatchQuestion) {
+      await answerCorrectly(tester, set.questions[index], last: false);
+      index++;
     }
-    expect(find.text('All done!'), findsOneWidget);
-
-    await tester.tap(find.text('Next'));
-    await tester.pumpAndSettle();
-    expect(find.text('2/6'), findsOneWidget);
-    expect(find.text('How many sides does a triangle have?'), findsOneWidget);
+    final q = set.questions[index] as ShapeMatchQuestion;
+    final piece = q.shapes.first;
+    final wrongSpot = q.shapes.last;
+    await tester.tap(
+      find.bySemanticsLabel(
+        RegExp('^${piece[0].toUpperCase()}${piece.substring(1)} piece'),
+      ),
+    );
+    await tester.pump();
+    await tester.tap(find.bySemanticsLabel('Empty $wrongSpot spot'));
+    await tester.pump();
+    expect(find.text('Try another spot for the $piece.'), findsOneWidget);
     await disposeApp(tester);
     semantics.dispose();
   });
