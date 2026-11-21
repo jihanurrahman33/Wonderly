@@ -28,7 +28,8 @@ android {
 
     defaultConfig {
         applicationId = "com.wonderly.wonderly"
-        minSdk = flutter.minSdkVersion
+        // LiteRT-LM (the on-device model runtime) needs Android 11 (API 30).
+        minSdk = 30
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
