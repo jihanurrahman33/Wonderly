@@ -18,6 +18,8 @@ class FeedbackPanel extends StatelessWidget {
     required this.questionNumber,
     required this.starsGained,
     this.fact,
+    this.coachText,
+    this.coachLoading = false,
     super.key,
   });
 
@@ -25,6 +27,10 @@ class FeedbackPanel extends StatelessWidget {
   final int questionNumber;
   final int starsGained;
   final String? fact;
+
+  /// Extra explanation written by the on-device model, when it is ready.
+  final String? coachText;
+  final bool coachLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +71,28 @@ class FeedbackPanel extends StatelessWidget {
             if (fact != null) ...[
               const SizedBox(height: 8),
               Text(fact!, style: AppText.body(16, weight: FontWeight.w700)),
+            ],
+            if (coachText != null || coachLoading) ...[
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.auto_awesome_rounded,
+                    size: 20,
+                    color: AppColors.sunDeep,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      coachText ?? 'Smart Buddy is thinking...',
+                      style: coachText == null
+                          ? AppText.body(15, color: AppColors.inkSoft)
+                          : AppText.body(15),
+                    ),
+                  ),
+                ],
+              ),
             ],
             const SizedBox(height: 10),
             Row(

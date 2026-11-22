@@ -68,8 +68,9 @@ Wonderly is built to meet it; verify each item for the build you ship.
       or video component, so they are never reachable.
 - [ ] No links out of the app and no purchases or prompts aimed at children.
 - [ ] Privacy policy published and linked in the store listing. Core points:
-      data stays on the device, none is collected or shared, the only download
-      is the on-device model file, deleting the app erases everything.
+      data stays on the device, none is collected or shared, the only downloads
+      are the on-device model file and the optional reading voice (both after
+      a grown-up approves), deleting the app erases everything.
 - [ ] Target audience and content rating answered as children, grades 1 to 5.
 - [ ] Play Data Safety and Apple App Privacy: "no data collected".
 - [ ] Declare that AI-written content is checked automatically; keep the

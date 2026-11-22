@@ -4,6 +4,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wonderly/core/constants/app_constants.dart';
 import 'package:wonderly/core/utils/clock.dart';
+import 'package:wonderly/features/ai/domain/usecases/coach_hints.dart';
 import 'package:wonderly/features/learning/domain/entities/question.dart';
 import 'package:wonderly/features/learning/domain/repositories/catalog_repository.dart';
 import 'package:wonderly/features/progress/domain/repositories/progress_repository.dart';
@@ -25,8 +26,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     required RecordAnswer recordAnswer,
     required RecordPlayTime recordPlayTime,
     required Clock clock,
+    CoachHints? coach,
     Stream<void> Function()? tickerFactory,
-  }) : _catalog = catalog,
+  }) : _coach = coach,
+       _catalog = catalog,
        _progress = progress,
        _settings = settings,
        _recordAnswer = recordAnswer,
@@ -41,9 +44,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on<QuizShapePlaced>(_onShapePlaced);
     // Dropping repeat taps stops a double-tap counting one answer twice.
     on<QuizNextPressed>(_onNext, transformer: droppable());
-    on<QuizHintToggled>(
-      (event, emit) => emit(state.copyWith(hintVisible: !state.hintVisible)),
-    );
+    on<QuizHintToggled>(_onHintToggled);
+    on<QuizCoachArrived>(_onCoachArrived);
     on<QuizTicked>(_onTicked, transformer: sequential());
     on<QuizLifecycleChanged>(
       (event, emit) => emit(state.copyWith(paused: !event.active)),
@@ -58,6 +60,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   final RecordAnswer _recordAnswer;
   final RecordPlayTime _recordPlayTime;
   final Clock _clock;
+  final CoachHints? _coach;
   final Stream<void> Function() _tickerFactory;
 
   StreamSubscription<void>? _ticker;
@@ -136,6 +139,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       lastStars: outcome?.starsGained ?? 0,
       newBadges: [...state.newBadges, ...?outcome?.newBadges],
       saveFailed: result.failureOrNull != null,
+      aiExplanation: () => null,
+      aiExplanationLoading: q is ChoiceQuestion && (_coach?.available ?? false),
     );
     // Drag-and-match shows no feedback panel: move straight on.
     if (q is ShapeMatchQuestion) {
@@ -144,6 +149,55 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       return;
     }
     emit(next);
+    _requestCoach(CoachKind.explanation, q, chosen: state.selected);
+  }
+
+  void _onHintToggled(QuizHintToggled event, Emitter<QuizState> emit) {
+    final show = !state.hintVisible;
+    final q = state.question;
+    final ask =
+        show &&
+        q != null &&
+        state.aiHint == null &&
+        !state.aiHintLoading &&
+        (_coach?.available ?? false);
+    emit(state.copyWith(hintVisible: show, aiHintLoading: ask ? true : null));
+    if (ask) _requestCoach(CoachKind.hint, q);
+  }
+
+  /// Asks the model in the background; the reply comes back as an event so the
+  /// quiz never waits on it.
+  void _requestCoach(CoachKind kind, Question q, {int? chosen}) {
+    final coach = _coach;
+    if (coach == null || !coach.available) return;
+    final index = state.index;
+    final future = kind == CoachKind.hint
+        ? coach.hint(q)
+        : coach.explain(q, chosenIndex: chosen);
+    unawaited(
+      future.then<String?>((text) => text, onError: (Object _) => null).then((
+        text,
+      ) {
+        if (!isClosed) {
+          add(QuizCoachArrived(kind: kind, index: index, text: text));
+        }
+      }),
+    );
+  }
+
+  void _onCoachArrived(QuizCoachArrived event, Emitter<QuizState> emit) {
+    if (event.index != state.index) return;
+    switch (event.kind) {
+      case CoachKind.hint:
+        emit(state.copyWith(aiHint: () => event.text, aiHintLoading: false));
+      case CoachKind.explanation:
+        emit(
+          state.copyWith(
+            aiExplanation: () => event.text,
+            aiExplanationLoading: false,
+          ),
+        );
+    }
   }
 
   (bool, AnswerRecord) _evaluate(Question q) {
@@ -189,6 +243,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           lastCorrect: () => null,
           placed: const {},
           hintVisible: false,
+          aiHint: () => null,
+          aiHintLoading: false,
+          aiExplanation: () => null,
+          aiExplanationLoading: false,
         ),
       );
       return;

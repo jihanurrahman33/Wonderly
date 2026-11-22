@@ -213,6 +213,8 @@ class _QuizViewState extends State<_QuizView> with WidgetsBindingObserver {
                       questionNumber: state.index,
                       starsGained: state.lastStars,
                       fact: question.fact,
+                      coachText: state.aiExplanation,
+                      coachLoading: state.aiExplanationLoading,
                     )
                   else ...[
                     QuizToolRow(
@@ -221,9 +223,20 @@ class _QuizViewState extends State<_QuizView> with WidgetsBindingObserver {
                           ? () => _readAloud(question)
                           : null,
                     ),
-                    if (state.hintVisible && question.hint != null) ...[
+                    if (state.hintVisible &&
+                        (state.aiHint ?? question.hint) != null) ...[
                       const SizedBox(height: 10),
-                      HintBubble(text: question.hint!),
+                      HintBubble(text: (state.aiHint ?? question.hint)!),
+                    ] else if (state.hintVisible && state.aiHintLoading) ...[
+                      const SizedBox(height: 10),
+                      const HintBubble(text: 'Thinking of a hint for you...'),
+                    ] else if (state.hintVisible) ...[
+                      const SizedBox(height: 10),
+                      const HintBubble(
+                        text:
+                            'Read the question once more and look at every '
+                            'choice. You can do it!',
+                      ),
                     ],
                     if (isMatch &&
                         state.canAdvance &&

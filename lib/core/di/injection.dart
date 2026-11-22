@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wonderly/core/services/feedback_service.dart';
+import 'package:wonderly/core/services/natural_voice.dart';
 import 'package:wonderly/core/services/sound_service.dart';
 import 'package:wonderly/core/services/speech_service.dart';
 import 'package:wonderly/core/storage/key_value_store.dart';
@@ -16,6 +17,7 @@ import 'package:wonderly/features/ai/domain/services/device_status.dart';
 import 'package:wonderly/features/ai/domain/services/llm_client.dart';
 import 'package:wonderly/features/ai/domain/services/model_manager.dart';
 import 'package:wonderly/features/ai/domain/usecases/bank_filler.dart';
+import 'package:wonderly/features/ai/domain/usecases/coach_hints.dart';
 import 'package:wonderly/features/ai/presentation/cubit/generation_cubit.dart';
 import 'package:wonderly/features/ai/presentation/cubit/model_cubit.dart';
 import 'package:wonderly/features/learning/data/asset_catalog_repository.dart';
@@ -60,7 +62,10 @@ Future<void> configureDependencies({
     // Core
     ..registerSingleton<Clock>(const SystemClock())
     ..registerSingleton<KeyValueStore>(SharedPrefsStore(prefs))
-    ..registerLazySingleton<SpeechService>(FlutterTtsSpeechService.new)
+    ..registerLazySingleton<NaturalVoice>(
+      () => NaturalVoice(fallback: FlutterTtsSpeechService()),
+    )
+    ..registerLazySingleton<SpeechService>(sl.call<NaturalVoice>)
     ..registerSingleton<FeedbackService>(const HapticFeedbackService())
     ..registerLazySingleton<SoundService>(
       () =>
@@ -141,6 +146,12 @@ Future<void> configureDependencies({
         currentGrade: () => sl<ProfileCubit>().state.profile?.grade ?? 3,
       ),
     )
+    ..registerLazySingleton(
+      () => CoachHints(
+        llm: sl<LlmClient>(),
+        isEnabled: () => sl<SettingsCubit>().state.aiEnabled,
+      ),
+    )
     // Per-screen state
     ..registerFactory(
       () => QuizBloc(
@@ -150,6 +161,7 @@ Future<void> configureDependencies({
         recordAnswer: sl(),
         recordPlayTime: sl(),
         clock: sl(),
+        coach: sl(),
       ),
     )
     ..registerFactory(() => ParentGateCubit(clock: sl()))

@@ -20,8 +20,8 @@ abstract final class InfoCopy {
       '• Name, buddy and progress stay on this device only.\n'
       '• Smart Buddy writes quizzes on this phone. Nothing you or your child '
       'type or answer is ever sent anywhere.\n'
-      '• The only download is the Smart Buddy model file, and only after a '
-      'grown-up approves it.\n'
+      '• The only downloads are the Smart Buddy model file and the optional '
+      'reading voice, and only after a grown-up approves them.\n'
       '• No analytics or tracking tools are used.\n'
       '• There are no links to other websites or apps.\n\n'
       'Removing the app erases everything it stored.';
