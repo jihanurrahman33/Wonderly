@@ -61,3 +61,23 @@ final class QuizLifecycleChanged extends QuizEvent {
   @override
   List<Object?> get props => [active];
 }
+
+/// Which kind of coaching text the model produced.
+enum CoachKind { hint, explanation }
+
+/// The model finished a hint or explanation for question [index].
+///
+/// Internal: the bloc raises it itself. A late reply for a question the child
+/// has already left is ignored.
+final class QuizCoachArrived extends QuizEvent {
+  const QuizCoachArrived({required this.kind, required this.index, this.text});
+
+  final CoachKind kind;
+  final int index;
+
+  /// The reply, or `null` when the model had nothing safe to say.
+  final String? text;
+
+  @override
+  List<Object?> get props => [kind, index, text];
+}

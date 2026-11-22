@@ -40,3 +40,17 @@ heat and battery drain while a child waits.
   rather than loosening checks.
 - Real speed, memory and acceptance rate must be measured on target phones
   (see docs/RELEASE.md).
+
+## Amendment: hints and explanations (live, but never authoritative)
+
+The quiz now asks the model for a short **hint** (Hint button) and a friendly
+**explanation** (after an answer). This is the one live use of the model, and it
+is safe for different reasons than question writing:
+
+- The model is told the correct answer and only phrases it; it never decides
+  what is right (`CoachHints`).
+- A reply is dropped if it fails `ContentSafety`, if a hint names the answer, or
+  if an explanation never names the right answer.
+- It never blocks the quiz: the reply arrives later as an event, with a 12 second
+  limit, and the built-in hint and fact are the fallback.
+- Replies are cached per question, and the grown-up AI switch turns it off.

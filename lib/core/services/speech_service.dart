@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:wonderly/core/error/failure.dart';
 import 'package:wonderly/core/error/result.dart';
+import 'package:wonderly/core/services/voice_picker.dart';
 import 'package:wonderly/core/utils/app_logger.dart';
 
 /// Reads text aloud. Implementations must never throw.
@@ -21,8 +22,28 @@ class FlutterTtsSpeechService implements SpeechService {
   Future<void> _configure() async {
     if (_configured) return;
     await _tts.setLanguage('en-US');
-    await _tts.setSpeechRate(0.42);
-    await _tts.setPitch(1.1);
+    // A natural pace and pitch: raising the pitch is what made the old setup
+    // sound like a toy. The voice itself matters most, so pick the best one.
+    await _tts.setSpeechRate(0.46);
+    await _tts.setPitch(1.0);
+    try {
+      final voice = VoicePicker.best(
+        (await _tts.getVoices as List<Object?>?) ?? const [],
+      );
+      if (voice != null) {
+        await _tts.setVoice({
+          'name': voice['name'] ?? '',
+          'locale': voice['locale'] ?? 'en-US',
+          if (voice['identifier'] != null) 'identifier': voice['identifier']!,
+        });
+        AppLogger.info(
+          'Read aloud voice: ${voice['name']} (${voice['quality'] ?? 'n/a'}).',
+        );
+      }
+    } on Object catch (e) {
+      // Keep the system voice: speech still works, just less naturally.
+      AppLogger.warning('Could not choose a read aloud voice.', e);
+    }
     _configured = true;
   }
 

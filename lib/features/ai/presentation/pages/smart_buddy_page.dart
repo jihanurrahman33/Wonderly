@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wonderly/core/di/injection.dart';
 import 'package:wonderly/core/router/routes.dart';
+import 'package:wonderly/core/services/natural_voice.dart';
 import 'package:wonderly/core/theme/app_colors.dart';
 import 'package:wonderly/core/theme/app_text.dart';
 import 'package:wonderly/core/widgets/art_view.dart';
@@ -61,6 +63,10 @@ class SmartBuddyPage extends StatelessWidget {
                 generation: generation,
                 enabled: settings.aiEnabled,
               ),
+            ],
+            if (model.status is! ModelUnsupported) ...[
+              const SizedBox(height: 14),
+              const _VoiceCard(),
             ],
             const SizedBox(height: 14),
             const _PrivacyNote(),
@@ -432,6 +438,84 @@ class _GenerationCard extends StatelessWidget {
   }
 }
 
+/// Download or remove the natural reading voice.
+class _VoiceCard extends StatelessWidget {
+  const _VoiceCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final voice = sl<NaturalVoice>();
+    return ValueListenableBuilder<VoiceStatus>(
+      valueListenable: voice.status,
+      builder: (context, status, _) => _Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Natural voice', style: AppText.heading(18)),
+            const SizedBox(height: 6),
+            Text(
+              status.isReady
+                  ? 'A friendly human-sounding voice reads questions aloud, '
+                        'even without internet.'
+                  : 'Download a friendly human-sounding voice for reading '
+                        'questions aloud (${voice.model.sizeLabel}, once).',
+              style: AppText.body(15),
+            ),
+            const SizedBox(height: 12),
+            switch (status.stage) {
+              VoiceStage.downloading => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  WonderProgressBar(
+                    value: status.percent / 100,
+                    height: 12,
+                    track: AppColors.sand,
+                    semanticLabel: 'Voice download progress',
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${status.percent}%. Keep the app open and stay on Wi-Fi.',
+                    style: AppText.subtitle(14),
+                  ),
+                ],
+              ),
+              VoiceStage.installing => Text(
+                'Getting the voice ready...',
+                style: AppText.subtitle(14),
+              ),
+              VoiceStage.ready => TextButton.icon(
+                onPressed: voice.remove,
+                icon: const Icon(Icons.delete_outline_rounded),
+                label: Text(
+                  'Remove voice',
+                  style: AppText.label(15, color: AppColors.incorrect),
+                ),
+              ),
+              VoiceStage.notInstalled || VoiceStage.failed => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (status.message != null) ...[
+                    _Message(
+                      icon: Icons.info_outline_rounded,
+                      text: status.message!,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                  WonderButton(
+                    label: 'Download natural voice',
+                    icon: Icons.download_rounded,
+                    onPressed: () => unawaited(voice.install()),
+                  ),
+                ],
+              ),
+            },
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _Message extends StatelessWidget {
   const _Message({
     required this.icon,
@@ -460,7 +544,8 @@ class _PrivacyNote extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     'Everything runs on this phone. Questions, answers and your child’s '
-    'name are never sent anywhere. The only download is the model file.',
+    'name are never sent anywhere. The only downloads are the model and the '
+    'reading voice.',
     style: AppText.subtitle(14),
     textAlign: TextAlign.center,
   );

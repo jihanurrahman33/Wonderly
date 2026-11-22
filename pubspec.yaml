@@ -37,6 +37,12 @@ dependencies:
   confetti: ^0.8.0
   flutter_animate: ^4.5.2
   json_schema_builder: ^0.1.7
+
+  # Natural reading voice (Kokoro). Pinned to 1.x: 2.0 removed the built in
+  # text to phoneme step the voices need. See docs/adr/0008.
+  sherpa_onnx: 1.13.8
+  archive: ^4.7.1
+  path_provider: ^2.1.6
 dev_dependencies:
   flutter_test:
     sdk: flutter

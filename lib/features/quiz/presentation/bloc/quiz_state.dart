@@ -17,6 +17,10 @@ class QuizState extends Equatable {
     this.lastCorrect,
     this.placed = const {},
     this.hintVisible = false,
+    this.aiHint,
+    this.aiHintLoading = false,
+    this.aiExplanation,
+    this.aiExplanationLoading = false,
     this.paused = false,
     this.correctCount = 0,
     this.answers = const [],
@@ -43,6 +47,14 @@ class QuizState extends Equatable {
   /// Shapes already matched on a drag question.
   final Set<String> placed;
   final bool hintVisible;
+
+  /// Model-written hint for this question, once it arrives.
+  final String? aiHint;
+  final bool aiHintLoading;
+
+  /// Model-written explanation shown after the answer is checked.
+  final String? aiExplanation;
+  final bool aiExplanationLoading;
   final bool paused;
   final int correctCount;
   final List<AnswerRecord> answers;
@@ -82,6 +94,10 @@ class QuizState extends Equatable {
     bool? Function()? lastCorrect,
     Set<String>? placed,
     bool? hintVisible,
+    String? Function()? aiHint,
+    bool? aiHintLoading,
+    String? Function()? aiExplanation,
+    bool? aiExplanationLoading,
     bool? paused,
     int? correctCount,
     List<AnswerRecord>? answers,
@@ -102,6 +118,12 @@ class QuizState extends Equatable {
       lastCorrect: lastCorrect != null ? lastCorrect() : this.lastCorrect,
       placed: placed ?? this.placed,
       hintVisible: hintVisible ?? this.hintVisible,
+      aiHint: aiHint != null ? aiHint() : this.aiHint,
+      aiHintLoading: aiHintLoading ?? this.aiHintLoading,
+      aiExplanation: aiExplanation != null
+          ? aiExplanation()
+          : this.aiExplanation,
+      aiExplanationLoading: aiExplanationLoading ?? this.aiExplanationLoading,
       paused: paused ?? this.paused,
       correctCount: correctCount ?? this.correctCount,
       answers: answers ?? this.answers,
@@ -125,6 +147,10 @@ class QuizState extends Equatable {
     lastCorrect,
     placed,
     hintVisible,
+    aiHint,
+    aiHintLoading,
+    aiExplanation,
+    aiExplanationLoading,
     paused,
     correctCount,
     answers,

@@ -13,3 +13,4 @@ the old one *Superseded*.
 | [0005](0005-llm-fills-a-bank-not-live.md) | On-device LLM fills a local bank, never live in the quiz | Accepted (implemented) |
 | [0006](0006-a2ui-generative-ui.md) | Generative UI through A2UI with a validated, tiny catalog | Accepted |
 | [0007](0007-multiple-learners.md) | Several learners per device with per-learner progress | Accepted |
+| [0008](0008-natural-reading-voice.md) | A downloaded neural voice for read aloud, with the system voice as fallback | Accepted |
